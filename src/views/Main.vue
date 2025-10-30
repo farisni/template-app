@@ -1,11 +1,8 @@
 <template>
-  <div id="app">
-    <!--路由出口-->
+  <div>
+    <h1>Main</h1>
     <RouterView />
   </div>
 </template>
-
 <script setup lang="ts">
 </script>
-
-<style scoped></style>
