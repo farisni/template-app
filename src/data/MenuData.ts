@@ -1,7 +1,7 @@
 const MenuData = {data:[
     {
         id:"1",
-        path: '/',
+        path: '/home',
         name: '首页',
         icon: 'HomeFilled',
     },

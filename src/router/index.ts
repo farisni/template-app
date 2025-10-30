@@ -6,7 +6,10 @@ import UserView from '../views/User.vue'
 
 const routes = [
     {
-        path: "/", component: Main, children: [
+        path: "/",
+        component: Main,
+        redirect: '/home', // 添加默认重定向
+        children: [
             {path: '/home', component: HomeView},
             {path: '/user', component: UserView},
         ]

@@ -34,17 +34,16 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue'
 
-const props = defineProps({
+defineProps({
   menuData: {
     type: Array,
     default: () => []
   }
 })
 
+// 通知父组件去调用
 const emit = defineEmits(['menu-item-click'])
-
 const handleMenuItemClick = (item) => {
   emit('menu-item-click', item) // 告诉父组件：我被点击了，这是点击的数据
 }
