@@ -3,25 +3,25 @@ const MenuData = {data:[
         id:"1",
         path: '/',
         name: '首页',
-        icon: 's-home',
+        icon: 'HomeFilled',
     },
     {
         id:"2",
         path: '/mall',
         name: '商品管理',
-        icon: 'video-play',
+        icon: 'Goods',
         children: [
             {
                 id:"22",
                 path: '/mall/brand',
                 name: '品牌管理',
-                icon: 'setting',
+                icon: 'ShoppingTrolley',
             },
             {
                 id:"23",
                 path: '/mall/add',
                 name: '添加商品',
-                icon: 'setting',
+                icon: 'DocumentAdd',
             }
         ]
 
@@ -30,7 +30,7 @@ const MenuData = {data:[
         id:"3",
         path: '/user',
         name: '用户管理',
-        icon: 'user'
+        icon: 'User'
     },
     {
         id:"4",
@@ -42,7 +42,7 @@ const MenuData = {data:[
                 id:"",
                 path: '/other/page1',
                 name: '页面1',
-                icon: 'setting',
+                icon: 'Open',
                 url: 'other/PageOne'
             },
             {
