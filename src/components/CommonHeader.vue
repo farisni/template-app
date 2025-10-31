@@ -6,14 +6,17 @@
         <Fold v-else />
       </el-icon>
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item ><a href="/home">首页</a></el-breadcrumb-item>
+        <transition-group name="breadcrumb">
+        <el-breadcrumb-item key="1"><a href="/home">首页</a></el-breadcrumb-item>
         <el-breadcrumb-item
             v-for="tab in appStore.tabList"
             :key="tab.id"
         >
           {{ tab.name }}
+          <!--<a v-if="tab.path === '/home'" :href="tab.path">{{ tab.name }}</a>-->
+          <!--<span v-else>{{ tab.name }}</span>-->
         </el-breadcrumb-item>
-
+        </transition-group>
       </el-breadcrumb>
     </div>
     <div class="right-content">
@@ -77,6 +80,21 @@ const doClick =  async (command) => {
       outline: unset;  // 移除鼠标放上去的边框
     }
 
+  }
+
+  /* 只保留进入动画，离开时立即消失 */
+  .breadcrumb-enter-active {
+    transition: all 0.5s ease-out;
+  }
+
+  .breadcrumb-enter-from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  .breadcrumb-leave-active {
+    transition: none; /* 离开时无动画 */
+    display: none; /* 立即隐藏 */
   }
 
 }
