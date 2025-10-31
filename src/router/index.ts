@@ -4,6 +4,8 @@ import Main from '@/views/Layout.vue'
 import HomeView from '@/views/Home.vue'
 import UserView from '@/views/User.vue'
 import Login from '@/views/Login.vue'
+import Brand from '@/views/Brand.vue'
+import GoodsAdd from '@/views/GoodsAdd.vue'
 
 const routes = [
     {
@@ -13,13 +15,14 @@ const routes = [
         children: [
             {path: '/home', component: HomeView},
             {path: '/user', component: UserView},
-
+            {path: '/mall', component: UserView},
+            {path: '/mall/brand', component: Brand},
+            {path: '/mall/add', component: GoodsAdd},
         ]
     },
     {
         path: "/login",
         component: Login,
-
     }
 
 ]

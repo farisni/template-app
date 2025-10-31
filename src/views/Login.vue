@@ -179,6 +179,9 @@ const doLogin = async () =>{
   align-items: center;     /* 垂直居中 */
   height: 100vh;           /* 全屏高度 */
   width: 100vw;            /* 全屏宽度 */
+  background-color: #2D3A4B;
+
+
 }
 
 #login-card {
@@ -192,7 +195,7 @@ const doLogin = async () =>{
 }
 
 .left-area {
-  background-color: #F2F6FC;
+  background-color: #FFFFFF;
   .qrcode-img {
     // 左右居中
     margin: 10px auto 10px;
@@ -227,8 +230,7 @@ const doLogin = async () =>{
 
 
 .right-area {
-  border: 1px solid #409Eff;
-  border-radius: 3px;
+  border-left: 1px solid #d1d1d1;
   background-color: #fff;
 
   /*登录表单*/

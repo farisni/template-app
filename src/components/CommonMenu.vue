@@ -14,7 +14,7 @@
       </template>
       <!--重点-->
       <!-- 递归调用 -->
-      <CommonMenu :menu-data="item.children" />
+      <CommonMenu :menu-data="item.children"   @menu-item-click="handleMenuItemClick" />   <!-- 这里传递事件 -->
     </el-sub-menu>
 
     <!-- 没有子菜单的情况 -->
@@ -45,6 +45,7 @@ defineProps({
 // 通知父组件去调用
 const emit = defineEmits(['menu-item-click'])
 const handleMenuItemClick = (item) => {
-  emit('menu-item-click', item) // 告诉父组件：我被点击了，这是点击的数据
+  emit('menu-item-click', item)
+  // 告诉父组件：我被点击了，这是点击的数据
 }
 </script>

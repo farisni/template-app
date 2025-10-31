@@ -3,8 +3,12 @@
   <!-- 菜单 -->
   <el-menu
       default-active="2"
-      class="el-menu-vertical-demo"
+      class="el-menu-vertical"
       :collapse="appStore.isCollapse"
+
+      active-text-color="#409eff"
+      background-color="#304156"
+      text-color="#BFCBD9"
   >
     <div id="title">
       <img src="../assets/images/1.png" alt="">
@@ -32,20 +36,53 @@ const appStore = useAppStore()
 
 const menuData = ref(MenuData) // 菜单数据
 
+const findMenuParentsById = (id, data, parents = []) => {
+  for (let item of data) {
+    // 如果找到目标节点，返回包括当前节点在内的完整路径
+    if (item.id === id) {
+      return [...parents, { id: item.id, name: item.name }];
+    }
+    // 如果有子节点，递归查找
+    if (item.children && item.children.length > 0) {
+      const result = findMenuParentsById(id, item.children, [
+        ...parents,
+        { id: item.id, name: item.name }
+      ]);
+      // 如果在子节点中找到，返回结果（包含完整路径）
+      if (result) {
+        return result;
+      }
+    }
+  }
+  return null;
+}
+
 // 处理菜单项点击
 const handleMenuItemClick = (item) => {
+  // console.log(item.name + " " + item.id)
   router.push(item.path)
+  // 改变面包屑导航
+  // todo 可修改当登录成功，菜单数据修改，在菜单数据加上全部的父路径名称，放入一个map，后面只用从id取
+  // 不用每次都计算
+  const allParents = findMenuParentsById(item.id, menuData.value.data);
+  appStore.updateBreadcrumb(allParents);
 }
+
+// 通过菜单id找到所以父菜单
+
 
 </script>
 
 <style lang="less" scoped>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
+.el-menu-vertical:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
+
 }
-.el-menu {
+
+.el-menu-vertical {
   height: 100vh;
+
 
   // 用户头像
   #title {
@@ -61,10 +98,10 @@ const handleMenuItemClick = (item) => {
       border-radius: 50%;
     }
 
-    //#304156
 
     span {
       /*文字禁止换行*/
+      color: #BFCBD9;
       white-space: nowrap;
       padding-left: 10px;
       /*先把文字隐藏*/

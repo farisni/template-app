@@ -1,10 +1,20 @@
 <template>
   <div class="header-container">
-    <div class = "hamburger" @click="appStore.CollapseMenu">
-      <el-icon :size="25" >
+    <div class = "hamburger" >
+      <el-icon :size="25" @click="appStore.collapseMenu">
         <Expand v-if="!appStore.isCollapse" />
         <Fold v-else />
       </el-icon>
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item ><a href="/home">首页</a></el-breadcrumb-item>
+        <el-breadcrumb-item
+            v-for="tab in appStore.tabList"
+            :key="tab.id"
+        >
+          {{ tab.name }}
+        </el-breadcrumb-item>
+
+      </el-breadcrumb>
     </div>
     <div class="right-content">
       <el-dropdown @command="doClick">
@@ -30,7 +40,6 @@ import { useAppStore } from '@/stores/app'
 import { logout,login } from '@/api/user'; // 导入 API 方法
 import { ElMessage } from 'element-plus'
 
-
 const appStore = useAppStore()
 const doClick =  async (command) => {
   if (command === 'cancel') {
@@ -46,7 +55,7 @@ const doClick =  async (command) => {
 </script>
 <style lang="less" scoped>
 .header-container {
-  background-color: #efefef;
+  background-color: #f5f5f5;
   height: 60px;
   display: flex; // 让hamburger和头像居中
   justify-content: space-between;
@@ -54,13 +63,20 @@ const doClick =  async (command) => {
   padding: 0 20px; // 不要紧贴边框
 
   .hamburger {
+    display: flex;
+    align-items: center; // 垂直居中
     cursor: pointer; /* 鼠标移入变成手型 */
+    .el-icon {
+      margin-right: 15px;
+    }
   }
 
   .right-content {
+    cursor: pointer;
     :deep(.el-tooltip__trigger:focus-visible) {
       outline: unset;  // 移除鼠标放上去的边框
     }
+
   }
 
 }

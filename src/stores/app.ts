@@ -4,14 +4,23 @@ import { defineStore } from 'pinia'
 
 export const useAppStore = defineStore('app', {
     state: () => ({
-        isCollapse: false
+        isCollapse: false,
+        tabList:[
+            // {"id":"1","name":"商品管理"}
+        ],
+
     }),
 
 
     actions: {
-        CollapseMenu() {
+        collapseMenu() {
             this.isCollapse = !this.isCollapse
         },
+        // 更新面包屑
+        updateBreadcrumb(data) {
+            //
+            this.tabList = data;
 
+        }
     }
 })
