@@ -15,21 +15,21 @@
           <!--登录模式-->
           <div class="login-form_switch">
             <span class="login-form_model"
-                  :class="{ 'active': state.loginType === 'username' }"
+                  :class="{ 'active': data.loginType === 'username' }"
                   @click="switchLoginType('username')">用户名登录</span>
             <span class="login-form_model"
-                  :class="{ 'active': state.loginType === 'phone' }"
+                  :class="{ 'active': data.loginType === 'phone' }"
                   @click="switchLoginType('phone')">短信登录</span>
             <!-- 动态下划线指示器 -->
-            <div class="indicator" :class="state.loginType"></div>
+            <div class="indicator" :class="data.loginType"></div>
           </div>
           <!--用户名登录的表单-->
-          <el-form  v-if="state.loginType === 'username'" :model="state.user"  :rules="state.userRules" ref="userLoginFormRef">
+          <el-form ref="userLoginFormRef" v-if="data.loginType === 'username'" :model="data.user" :rules="data.userRules" >
             <el-form-item prop="username">
-              <el-input   prefix-icon="User" v-model="state.user.username" placeholder="请输入账号" />
+              <el-input prefix-icon="User" v-model="data.user.username" placeholder="请输入账号" />
             </el-form-item>
             <el-form-item prop="password">
-              <el-input   type="password" :prefix-icon="Lock"  v-model="state.user.password"  placeholder="请输入密码" />
+              <el-input type="password" :prefix-icon="Lock" v-model="data.user.password" placeholder="请输入密码" />
             </el-form-item>
             <el-form-item >
               <el-input class="content-code" :prefix-icon="Promotion" placeholder="请输入验证码" >
@@ -43,29 +43,29 @@
             </el-form-item>
           </el-form>
           <!--手机号登录的表单-->
-          <el-form  v-if="state.loginType === 'phone'" :model="state.user" :rules="state.phoneRules">
+          <el-form ref="phoneLoginFormRef" v-if="data.loginType === 'phone'" :model="data.user" :rules="data.phoneRules" >
             <el-form-item prop="phone">
-              <el-input   prefix-icon="Phone" v-model="state.user.phone"  placeholder="请输入手机号" />
+              <el-input prefix-icon="Phone" v-model="data.user.phone" placeholder="请输入手机号" />
             </el-form-item>
             <el-form-item prop="smsCode" >
-              <el-input class="content-code" :prefix-icon="Message" v-model="state.user.smsCode" placeholder="请输入验证码" >
+              <el-input class="content-code" :prefix-icon="Message" v-model="data.user.smsCode" placeholder="请输入验证码" >
                 <!-- #suffix后缀插槽 -->
                 <template #suffix>
                   <el-button
                       link
                       type="primary"
-                      :disabled="state.countdown > 0"
+                      :disabled="data.countdown > 0"
                       @click="getSMS"
                       class="captcha-btn"
                   >
-                    {{ state.countdown > 0 ? `${state.countdown}s后重新获取` : '获取验证码' }}
+                    {{ data.countdown > 0 ? `${data.countdown}s后重新获取` : '获取验证码' }}
                   </el-button>
                 </template>
               </el-input>
               <span class="content-code_img"></span>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" :loading="state.loading" @click="doLogin" >登录</el-button>
+              <el-button type="primary" :loading="data.loading" @click="doLogin" >登录</el-button>
             </el-form-item>
           </el-form>
           <div class="tip-msg">* 温馨提示：建议使用谷歌、Microsoft Edge，版本 79.0.1072.62 及以上浏览器，360浏览器请使用极速模式</div>
@@ -80,11 +80,12 @@ import {Lock,Promotion,Message } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import CaptchaCode from 'vue-captcha-code' // 模拟图形验证码，实际后端获取
 import { ElMessage } from 'element-plus'
+import router from "@/router/index.js";
 
+// 统一数据管理
 // 常用ref > reactive
 // ref 在模版中不需要.value Vue会自动解包 ，在js中需要
-// 统一默认配置
-const state = ref({
+const data = ref({
   loginType: 'username', // 默认选择用户名登录模式
   countdown: 0, // 获取手机短信验证码的默认值
   loading: false, // 登录状态
@@ -107,14 +108,16 @@ const state = ref({
   }
 })
 
-// js部分 ref访问要带上.value
-const userLoginFormRef = ref() // DOM/组件引用必须用 ref()
 
+// DOM管理
+// js部分 ref访问要带上.value
+const userLoginFormRef = ref()
+const phoneLoginFormRef = ref()
 
 
 // 使用方法处理点击事件
 const switchLoginType = (type) => {
-  state.value.loginType = type
+  data.value.loginType = type
   // 可以在这里添加其他逻辑
   // todo 切换逻辑
 }
@@ -132,10 +135,10 @@ const getSMS = () => {
   console.log('获取验证码')
 
   // 开始倒计时
-  state.value.countdown = 60
+  data.value.countdown = 60
   const timer = setInterval(() => {
-    state.countdown --
-    if (state.countdown <= 0) {
+    data.countdown --
+    if (data.countdown <= 0) {
       clearInterval(timer)
     }
   }, 1000)
@@ -154,17 +157,20 @@ const doLogin = async () =>{
     //   return
     // }
 
-    // 执行登录Api请求
-    state.loading = true
+    // 执行登录Api请求，获取token存放，跳转/home
     // await loginAPI(loginForm)
+    // 导航守卫
+    data.loading = true
+    localStorage.setItem("token","cd424cdsac134243fdsacsa")
     ElMessage.success('登录成功')
+    router.push("/home") // 跳转首页
 
   } catch (error) {
     if (error instanceof Error) {
       ElMessage.error(error.message || '登录失败')
     }
   } finally {
-    state.loading = false
+    data.loading = false
   }
 }
 </script>
