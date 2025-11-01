@@ -12,20 +12,27 @@ const routes = [
         path: "/",
         component: Main,
         redirect: '/home', // 添加默认重定向
+        meta:{},
         children: [
-            {path: '/home', component: HomeView},
-            {path: '/user', component: UserView},
-            {path: '/mall', component: UserView},
-            {path: '/mall/brand', component: Brand},
-            {path: '/mall/add', component: GoodsAdd},
+            {path: '/home', meta:{title:"首页"}, component: HomeView},
+            {path: '/user',  meta:{title:"用户管理"},component: UserView},
+            {path: '/mall',  meta:{title:"商品管理"}, component: UserView,
+                children: [
+                    {path: '/mall/brand',meta:{title:"品牌管理"},component: Brand},
+                    {path: '/mall/add',  meta:{title:"添加商品"},component: GoodsAdd},
+                ]
+            },
+
         ]
     },
     {
         path: "/login",
+        meta:{title:"登录"},
         component: Login,
     }
-
 ]
+
+
 
 const router = createRouter({
     history: createWebHistory(),

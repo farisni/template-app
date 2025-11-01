@@ -25,10 +25,12 @@
 
 <script lang="ts" setup>
 import { ref} from 'vue'
-
+import { computed } from 'vue'
 import MenuData from '@/data/MenuData'
 import CommonMenu from "@/components/CommonMenu.vue";
 import router from "@/router/index";
+import { useRoute } from 'vue-router'
+
 
 import { useAppStore } from '@/stores/app'
 
@@ -61,11 +63,6 @@ const findMenuParentsById = (id, data, parents = []) => {
 const handleMenuItemClick = (item) => {
   // console.log(item.name + " " + item.id)
   router.push(item.path)
-  // 改变面包屑导航
-  // todo 可修改当登录成功，菜单数据修改，在菜单数据加上全部的父路径名称，放入一个map，后面只用从id取
-  // 不用每次都计算
-  const allParents = findMenuParentsById(item.id, menuData.value.data);
-  appStore.updateBreadcrumb(allParents);
 }
 
 // 通过菜单id找到所以父菜单

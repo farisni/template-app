@@ -5,12 +5,9 @@ import { defineStore } from 'pinia'
 export const useAppStore = defineStore('app', {
     state: () => ({
         isCollapse: false,
-        tabList:[
-            // {"id":"1","name":"首页"}
-        ],
+        tabList:[],  // 存放面包屑数据
 
     }),
-
 
     actions: {
         collapseMenu() {

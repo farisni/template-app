@@ -7,14 +7,12 @@
       </el-icon>
       <el-breadcrumb separator="/">
         <transition-group name="breadcrumb">
-        <el-breadcrumb-item key="1"><a href="/home">首页</a></el-breadcrumb-item>
+        <el-breadcrumb-item :key="1"><a href="/home" style="cursor: pointer">首页</a></el-breadcrumb-item>
         <el-breadcrumb-item
-            v-for="tab in appStore.tabList"
-            :key="tab.id"
+            v-for="tab in breadcrumbList"
+            :key="tab.path"
         >
-          {{ tab.name }}
-          <!--<a v-if="tab.path === '/home'" :href="tab.path">{{ tab.name }}</a>-->
-          <!--<span v-else>{{ tab.name }}</span>-->
+          {{ tab.meta.title }}
         </el-breadcrumb-item>
         </transition-group>
       </el-breadcrumb>
@@ -42,7 +40,10 @@ import router from "@/router/index.js";
 import { useAppStore } from '@/stores/app'
 import { logout,login } from '@/api/user'; // 导入 API 方法
 import { ElMessage } from 'element-plus'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const appStore = useAppStore()
 const doClick =  async (command) => {
   if (command === 'cancel') {
@@ -55,6 +56,11 @@ const doClick =  async (command) => {
     router.push("/login")
   }
 }
+// 计算属性，根据路由变化面包屑导航
+const breadcrumbList = computed(() =>{
+  return route.matched.filter(item => item.path !== '/' && item.path !== '/home')
+})
+
 </script>
 <style lang="less" scoped>
 .header-container {
