@@ -3,9 +3,7 @@
   <!-- 菜单 -->
   <el-menu
       default-active="2"
-      class="el-menu-vertical"
       :collapse="appStore.isCollapse"
-
       active-text-color="#409eff"
       background-color="#304156"
       text-color="#BFCBD9"
@@ -50,13 +48,13 @@ const handleMenuItemClick = (item) => {
 </script>
 
 <style lang="less" scoped>
-.el-menu-vertical:not(.el-menu--collapse) {
+.el-menu:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
 
 }
 
-.el-menu-vertical {
+.el-menu {
   height: 100vh;
 
 
@@ -73,7 +71,6 @@ const handleMenuItemClick = (item) => {
       /*变圆型头像*/
       border-radius: 50%;
     }
-
 
     span {
       /*文字禁止换行*/

@@ -49,3 +49,11 @@ const handleMenuItemClick = (item) => {
   // 告诉父组件：我被点击了，这是点击的数据
 }
 </script>
+<style lang="less" scoped>
+
+.el-menu-item, .el-sub-menu  {
+  span {
+    padding-left: 5px;
+  }
+}
+</style>

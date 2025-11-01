@@ -5,6 +5,7 @@ import 'element-plus/dist/index.css'
 import router from './router/index'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue' // 引入Icon
 import { createPinia } from 'pinia' // 状态管理
+import '@/styles/index.scss' // 引入全局样式
 
 
 const app = createApp(App)
