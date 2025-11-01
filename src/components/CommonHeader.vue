@@ -6,12 +6,9 @@
         <Fold v-else />
       </el-icon>
       <el-breadcrumb separator="/">
-        <transition-group name="breadcrumb">
-        <el-breadcrumb-item :key="1"><a href="/home" style="cursor: pointer">首页</a></el-breadcrumb-item>
-        <el-breadcrumb-item
-            v-for="tab in breadcrumbList"
-            :key="tab.path"
-        >
+        <transition-group name="breadcrumb"><!--动态效果-->
+        <el-breadcrumb-item key="/home" to="/home">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :key="tab.path" :to="tab.path" v-for="tab in breadcrumbList" >
           {{ tab.meta.title }}
         </el-breadcrumb-item>
         </transition-group>
@@ -56,6 +53,8 @@ const doClick =  async (command) => {
     router.push("/login")
   }
 }
+
+
 // 计算属性，根据路由变化面包屑导航
 const breadcrumbList = computed(() =>{
   return route.matched.filter(item => item.path !== '/' && item.path !== '/home')

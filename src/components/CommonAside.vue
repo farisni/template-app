@@ -25,11 +25,9 @@
 
 <script lang="ts" setup>
 import { ref} from 'vue'
-import { computed } from 'vue'
 import MenuData from '@/data/MenuData'
 import CommonMenu from "@/components/CommonMenu.vue";
 import router from "@/router/index";
-import { useRoute } from 'vue-router'
 
 
 import { useAppStore } from '@/stores/app'
@@ -38,26 +36,7 @@ const appStore = useAppStore()
 
 const menuData = ref(MenuData) // 菜单数据
 
-const findMenuParentsById = (id, data, parents = []) => {
-  for (let item of data) {
-    // 如果找到目标节点，返回包括当前节点在内的完整路径
-    if (item.id === id) {
-      return [...parents, { id: item.id, name: item.name }];
-    }
-    // 如果有子节点，递归查找
-    if (item.children && item.children.length > 0) {
-      const result = findMenuParentsById(id, item.children, [
-        ...parents,
-        { id: item.id, name: item.name }
-      ]);
-      // 如果在子节点中找到，返回结果（包含完整路径）
-      if (result) {
-        return result;
-      }
-    }
-  }
-  return null;
-}
+
 
 // 处理菜单项点击
 const handleMenuItemClick = (item) => {
@@ -89,8 +68,8 @@ const handleMenuItemClick = (item) => {
     padding: 10px 5px;
 
     img {
-      width: 50px;
-      height: 50px;
+      width: 45px;
+      height: 45px;
       /*变圆型头像*/
       border-radius: 50%;
     }
