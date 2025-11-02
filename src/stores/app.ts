@@ -1,7 +1,5 @@
 // 公共变量/数据/方法，状态交换的地方
-
 import { defineStore } from 'pinia'
-// import {menuToRoutes} from "@/router/index.js";
 
 export const useAppStore = defineStore('app', {
     state: () => ({
