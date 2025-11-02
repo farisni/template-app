@@ -1,7 +1,7 @@
 // 公共变量/数据/方法，状态交换的地方
 
 import { defineStore } from 'pinia'
-import {menuToRoutes} from "@/router/index.js";
+// import {menuToRoutes} from "@/router/index.js";
 
 export const useAppStore = defineStore('app', {
     state: () => ({
@@ -26,10 +26,10 @@ export const useAppStore = defineStore('app', {
             this.menu = val
         },
         // 动态添加路由
-        putRouters(menu) {
-            let routesForUser = menuToRoutes(menu);
-            console.log(routesForUser)
-        },
+        // putRouters(menu) {
+        //     let routesForUser = menuToRoutes(menu);
+        //     console.log(routesForUser)
+        // },
         // 设置用户信息并保存到 localStorage
         setUserInfo(userInfo: any) {
             this.userInfo = {

@@ -103,14 +103,12 @@
             path: '/other/page1',
             name: '页面1',
             icon: 'Open',
-            url: 'other/PageOne'
           },
           {
             id: "42",
             path: '/other/page2',
             name: '页面2',
             icon: 'setting',
-            url: 'other/PageTwo'
           }
         ]
       }

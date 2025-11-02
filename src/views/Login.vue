@@ -80,7 +80,7 @@ import {Lock,Promotion,Message } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import CaptchaCode from 'vue-captcha-code' // 模拟图形验证码，实际后端获取
 import { ElMessage } from 'element-plus'
-import router from "@/router/index.js";
+import router, {addDynamicRoutes} from "@/router/index.js";
 import { getUserInfo, login } from '@/api/user'; // 导入 API 方法
 import { useAppStore } from '@/stores/app'
 
@@ -148,6 +148,9 @@ const getSMS = () => {
   }, 1000)
 }
 
+
+
+
 //
 const doLogin = async () =>{
   try {
@@ -160,12 +163,14 @@ const doLogin = async () =>{
     console.log(response.data.userInfo.username + " 已登录...")
     // 导航守卫
     data.loading = true
+    // 存token
     localStorage.setItem("token",response.data.token)
     appStore.setUserInfo({"name":response.data.userInfo.username})
-    // 通过app.ts 放入localStorage
+    // 通过app.ts persist 放入localStorage
     appStore.setMenu(response.data.userInfo.menu)
     // 添加动态路由
-    appStore.putRouters(response.data.userInfo.menu);
+    // addDynamicRoutes(response.data.userInfo.menu)
+    addDynamicRoutes(response.data.userInfo.menu)
     ElMessage.success('登录成功')
     // 跳转首页
     router.push("/home")
@@ -177,6 +182,9 @@ const doLogin = async () =>{
     data.loading = false
   }
 }
+
+
+
 </script>
 <style lang="less" scoped>
 
