@@ -33,6 +33,7 @@ const appStore = useAppStore()
 
 // 处理菜单项点击
 const handleMenuItemClick = (item) => {
+  console.log(router.getRoutes())
   router.push(item.path)
 }
 

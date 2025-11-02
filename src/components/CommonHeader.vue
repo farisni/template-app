@@ -8,7 +8,7 @@
       <el-breadcrumb separator="/">
         <transition-group name="breadcrumb"><!--动态效果-->
         <el-breadcrumb-item key="/home" to="/home">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :key="tab.path" :to="tab.path" v-for="tab in breadcrumbList" >
+        <el-breadcrumb-item :key="tab.path" :to="tab.path && !tab.path.includes('pathMatch') ? tab.path : undefined" v-for="tab in breadcrumbList" >
           {{ tab.meta.title }}
         </el-breadcrumb-item>
         </transition-group>
@@ -33,12 +33,15 @@
   </div>
 </template>
 <script setup>
-import router from "@/router/index.js";
+import { ref, watch } from 'vue'
+
+import router,{removeDynamicRoutes,dynamicRoutes} from "@/router/index.js";
 import { useAppStore } from '@/stores/app'
 import { logout,login } from '@/api/user'; // 导入 API 方法
 import { ElMessage } from 'element-plus'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+
 
 const route = useRoute()
 const appStore = useAppStore()
@@ -48,6 +51,8 @@ const doClick =  async (command) => {
     // 清除token 和其他localStorage
     appStore.clearPersistedData()
     ElMessage.success('已退出')
+    // 清除动态路由
+    removeDynamicRoutes()
     // 跳转登录页面
     router.push("/login")
   }
@@ -56,8 +61,18 @@ const doClick =  async (command) => {
 
 // 计算属性，根据路由变化面包屑导航
 const breadcrumbList = computed(() =>{
-  return route.matched.filter(item => item.path !== '/' && item.path !== '/home')
+  // route 当前路由信息对象
+  return route.matched.filter(item => item.path !== '/'
+      && item.path !== '/home')
 })
+
+// // 监听路由变化[citation:1][citation:8]
+// watch(() => route.path, () => {
+//   // console.log(dynamicRoutes)
+//   // console.log(router.getRoutes())
+//   // console.log(route.matched)
+// }, { immediate: true })
+
 
 </script>
 <style lang="less" scoped>

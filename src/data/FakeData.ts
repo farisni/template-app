@@ -136,7 +136,21 @@
             icon: 'ShoppingTrolley',
           }
         ]
-      }
+      },
+        {
+            id: "4",
+            name: '其他',
+            path: '/other',
+            icon: 'Share',
+            children: [
+                {
+                    id: "41",
+                    path: '/other/page1',
+                    name: '页面1',
+                    icon: 'Open',
+                }
+            ]
+        }
     ]
   }
 ]

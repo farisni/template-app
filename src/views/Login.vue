@@ -94,7 +94,7 @@ const data = ref({
   countdown: 0, // 获取手机短信验证码的默认值
   loading: false, // 登录状态
   user:{
-    username: 'admin',
+    username: 'ryan',
     password: '1',
     phone: '',
     smsCode: ''

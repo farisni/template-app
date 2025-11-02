@@ -3,11 +3,7 @@ import {createWebHistory, createRouter, useRouter} from 'vue-router'
 
 import Layout from '@/views/Layout.vue'
 import HomeView from '@/views/Home.vue'
-import UserView from '@/views/User.vue'
 import Login from '@/views/Login.vue'
-import Brand from '@/views/Brand.vue'
-import GoodsAdd from '@/views/GoodsAdd.vue'
-import Notfound from "@/views/404Notfound.vue";
 import type { RouteRecordRaw } from 'vue-router'
 
 
@@ -28,7 +24,7 @@ const routes: RouteRecordRaw[] = [
         path: "/login",
         meta:{title:"登录"},
         component: Login,
-    },
+    }
 ]
 
 
@@ -46,21 +42,26 @@ const router = createRouter({
     routes
 })
 
+// 动态路由
+export const dynamicRoutes: RouteRecordRaw[] = []
 
 export const addDynamicRoutes = (menuArr) => {
 
     const addRoutes = (menuList) => {
         menuList.forEach((menu) => {
+            if (!menu.path) return false
+            if (menu.path === '/' || menu.path === '/home') return false
+
             // 构建路由
             const routeItem: RouteRecordRaw =  {
                 path: menu.path,
-                // name: menu.id,
+                name: menu.id, // 唯一标志
                 meta: {title: menu.name},
-                component:componentMap[menu.path]
+                component:componentMap[menu.path] || (() => import('@/views/404.vue')) // 如果菜单有，但是没有组件映射，直接404
             }
 
-            if (menu.path && !router.hasRoute(menu.path)) {
-
+            if (menu.path  && !router.hasRoute(menu.path)) {
+                dynamicRoutes.push(routeItem)
                 // 加入路由，注意父级一定要有name属性
                 router.addRoute('Layout', routeItem);
             }
@@ -72,9 +73,9 @@ export const addDynamicRoutes = (menuArr) => {
         // 统配组件放到最后，未找到或者未配置页面，直接跳转404页面
         router.addRoute("Layout",{
             path: '/:pathMatch(.*)*',
-            name: 'NotFound',
-            meta: { title: "NotFound" },
-            component: () => import('@/views/404Notfound.vue')
+            name: '404',
+            meta: { title: "404 NotFound" },
+            component: () => import('@/views/404.vue')
         })
     };
 
@@ -83,6 +84,15 @@ export const addDynamicRoutes = (menuArr) => {
 
 };
 
+
+export function removeDynamicRoutes() {
+    dynamicRoutes.forEach(name => {
+        if (router.hasRoute(name)) {
+            router.removeRoute(name)
+        }
+    })
+    dynamicRoutes.length = 0 // 清空记录
+}
 
 
 export default router; // 导出路由
