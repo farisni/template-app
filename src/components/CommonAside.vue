@@ -11,12 +11,12 @@
     <div id="title">
       <img src="../assets/images/1.png" alt="">
       <!---->
-      <span v-if="!appStore.isCollapse">欢迎你，{{ appStore.userInfo.name }} ！</span>
+      <span v-if="!appStore.isCollapse">欢迎你，{{ appStore.userInfo.username }} ！</span>
     </div>
     <!--引入递给菜单组件-->
     <!--从pinia 的持久化自动拿到Menu localStorage获取数据或者app.ts-->
     <CommonMenu
-        :menu-data="appStore.menu"
+        :menu-data="appStore.userInfo.menu"
         @menu-item-click="handleMenuItemClick"
     />
 

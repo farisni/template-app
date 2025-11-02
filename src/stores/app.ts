@@ -6,11 +6,12 @@ import { defineStore } from 'pinia'
 export const useAppStore = defineStore('app', {
     state: () => ({
         isCollapse: false,
-        menu:[], // 不同账号的菜单数据
+        // menu:[], // 不同账号的菜单数据
         userInfo: {
-            name: '？',
+            username: '？',
             role: '',
-            avatar: ''
+            avatar: '',
+            menu:[]
         }
         }
     ),
@@ -23,13 +24,11 @@ export const useAppStore = defineStore('app', {
         setMenu(val) {
             // 菜单信息用localStorage存起来，否则刷新后menu的信息就清空了
             // localStorage.setItem("menu",JSON.stringify(val))
-            this.menu = val
+            // this.menu = val
         },
-        // 动态添加路由
-        // putRouters(menu) {
-        //     let routesForUser = menuToRoutes(menu);
-        //     console.log(routesForUser)
-        // },
+        getMenu: (state) => {
+            return state.userInfo.menu
+        },
         // 设置用户信息并保存到 localStorage
         setUserInfo(userInfo: any) {
             this.userInfo = {

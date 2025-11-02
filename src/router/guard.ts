@@ -5,6 +5,7 @@ import router from "@/router/index";
 // const appStore = useAppStore()
 
 router.beforeEach((to, from, next) => {
+
     // 在路由跳转前执行
     let token = localStorage.getItem("token");
     // 登录状态检查

@@ -165,11 +165,9 @@ const doLogin = async () =>{
     data.loading = true
     // 存token
     localStorage.setItem("token",response.data.token)
-    appStore.setUserInfo({"name":response.data.userInfo.username})
+    appStore.setUserInfo(response.data.userInfo)
     // 通过app.ts persist 放入localStorage
-    appStore.setMenu(response.data.userInfo.menu)
     // 添加动态路由
-    // addDynamicRoutes(response.data.userInfo.menu)
     addDynamicRoutes(response.data.userInfo.menu)
     ElMessage.success('登录成功')
     // 跳转首页

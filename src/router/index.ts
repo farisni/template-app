@@ -42,7 +42,7 @@ const asyncRoutes : RouteRecordRaw[] = [
     },
 ]
 
-
+// 基础路由（静态路由）
 const routes: RouteRecordRaw[] = [
     {
         path: "/",
