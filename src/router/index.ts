@@ -46,6 +46,20 @@ const router = createRouter({
 // 动态路由
 export const dynamicRoutes: RouteRecordRaw[] = []
 
+const findComponent = (path: string) => {
+    if (!path) return false
+    const component = componentMap[path]
+
+    // 如果组件存在且是函数，直接返回
+    if (component && typeof component === 'function') {
+        return componentMap[path]
+    }
+
+    // 如果组件不存在或者不是函数，返回 404
+    return () => import('@/views/404.vue')
+}
+
+
 export const addDynamicRoutes = (menuArr) => {
 
     const addRoutes = (parentName,menuList) => {
@@ -57,7 +71,7 @@ export const addDynamicRoutes = (menuArr) => {
                 path: menu.path,
                 name: menu.id, // 唯一标志, 注意我把菜单的id用作了路由的name
                 meta: {title: menu.name},
-                component:componentMap[menu.path] || (() => import('@/views/404.vue')) // 如果菜单有，但是没有组件映射，直接404
+                component:componentMap[menu.path]// 如果菜单有，但是没有组件映射，直接404 (() => import('@/views/404.vue'))
             }
 
             if (menu.path  && !router.hasRoute(menu.path)) {

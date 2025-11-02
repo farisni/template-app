@@ -66,12 +66,6 @@ const breadcrumbList = computed(() =>{
       && item.path !== '/home')
 })
 
-// // 监听路由变化[citation:1][citation:8]
-// watch(() => route.path, () => {
-//   // console.log(dynamicRoutes)
-//   // console.log(router.getRoutes())
-//   // console.log(route.matched)
-// }, { immediate: true })
 
 
 </script>
