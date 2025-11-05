@@ -7,12 +7,12 @@
       </el-icon>
       <el-breadcrumb separator="/">
         <transition-group name="breadcrumb"><!--动态效果-->
-        <el-breadcrumb-item key="/home" to="/home">首页</el-breadcrumb-item>
+        <el-breadcrumb-item key="/home" to="/home" @click="handleBreadcrumbClick('/home')">首页</el-breadcrumb-item>
           <!--&& !tab.path.includes('pathMatch') ? tab.path : undefined-->
           <!-- 获取有效的 :to 值-->
         <el-breadcrumb-item :key="tab.path" :to="tab.path in componentMap ? tab.path : undefined"
                             v-for="tab in breadcrumbList"
-                            @click="handleBreadcrumbClick(tab)">
+                            @click="handleBreadcrumbClick(tab.path)">
           {{ tab.meta.title }}
         </el-breadcrumb-item>
         </transition-group>
@@ -64,8 +64,8 @@ const doClick =  async (command) => {
   }
 }
 
-const handleBreadcrumbClick = (tab) => {
-  appStore.activePath = tab.path
+const handleBreadcrumbClick = (path) => {
+  appStore.activePath = path
 }
 
 // 平铺路由后，通过当前路由，找到所有父路由（路径）

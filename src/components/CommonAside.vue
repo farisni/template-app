@@ -65,6 +65,7 @@ const handleMenuClick = (item) => {
     padding: 10px 5px;
 
     img {
+      display: flex;
       width: 45px;
       height: 45px;
       /*变圆型头像*/
