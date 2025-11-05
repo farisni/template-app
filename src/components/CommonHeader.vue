@@ -34,11 +34,8 @@
   </div>
 </template>
 <script setup>
-import { ref, watch } from 'vue'
-
 import router,{removeDynamicRoutes} from "@/router/index.js";
 import { useAppStore } from '@/stores/app'
-import { logout,login } from '@/api/user'; // 导入 API 方法
 import { ElMessage } from 'element-plus'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'

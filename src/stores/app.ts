@@ -10,8 +10,15 @@ export const useAppStore = defineStore('app', {
             role: '',
             avatar: '',
             menu:[]
-        }
-        }
+        },
+        tagsData: [
+            {
+                id: "1",
+                path: '/home',
+                name: '首页',
+            }
+        ]
+    }
     ),
 
     actions: {
@@ -24,8 +31,19 @@ export const useAppStore = defineStore('app', {
             // localStorage.setItem("menu",JSON.stringify(val))
             // this.menu = val
         },
-        getMenu: (state) => {
-            return state.userInfo.menu
+        // 更新标签
+        addTag(menuItem) {
+            // 如果点击的不在标签数据中,则添加
+            const index = this.tagsData.findIndex(val => val.path === menuItem.path)
+            if (index === -1) {
+                this.tagsData.push({id:menuItem.id, path: menuItem.path, name:menuItem.name})
+            }
+        },
+        // 删除tag:删除tabList中对应的item
+        removeTag(item) {
+            // 要删除的是tagsData中的item
+            const index = this.tagsData.findIndex(val => val.path === item.name)
+            this.tagsData.splice(index, 1)
         },
         // 设置用户信息并保存到 localStorage
         setUserInfo(userInfo: any) {

@@ -4,6 +4,7 @@
       <el-aside width="auto"><CommonAside/></el-aside>
       <el-container>
         <el-header><CommonHeader/></el-header>
+        <CommonTags/>
         <el-main>
           <!--内容区域-->
           <RouterView />
@@ -14,8 +15,9 @@
 </template>
 <script setup lang="ts">
 // 自动注册，无需 components 选项
-import CommonAside from "../components/CommonAside.vue"
-import CommonHeader from "../components/CommonHeader.vue"
+import CommonAside from "@/components/CommonAside.vue"
+import CommonHeader from "@/components/CommonHeader.vue"
+import CommonTags from "@/components/CommonTags.vue";
 
 </script>
 <style lang="less" scoped>

@@ -38,6 +38,8 @@ const appStore = useAppStore()
 // 处理菜单项点击
 const handleMenuItemClick = (item) => {
   router.push(item.path)
+  // 添加标签
+  appStore.addTag(item)
 }
 
 </script>
