@@ -9,7 +9,9 @@
         <transition-group name="breadcrumb"><!--动态效果-->
         <el-breadcrumb-item key="/home" to="/home">首页</el-breadcrumb-item>
           <!--&& !tab.path.includes('pathMatch') ? tab.path : undefined-->
-        <el-breadcrumb-item :key="tab.path" :to="tab.path" v-for="tab in breadcrumbList"
+          <!-- 获取有效的 :to 值-->
+        <el-breadcrumb-item :key="tab.path" :to="tab.path in componentMap ? tab.path : undefined"
+                            v-for="tab in breadcrumbList"
                             @click="handleBreadcrumbClick(tab)">
           {{ tab.meta.title }}
         </el-breadcrumb-item>
@@ -35,7 +37,7 @@
   </div>
 </template>
 <script setup>
-import router,{removeDynamicRoutes} from "@/router/index.js";
+import router,{removeDynamicRoutes, componentMap} from "@/router/index.js";
 import { useAppStore } from '@/stores/app'
 import { ElMessage } from 'element-plus'
 import { computed } from 'vue'
@@ -44,6 +46,11 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const appStore = useAppStore()
+
+
+
+
+
 const doClick =  async (command) => {
   if (command === 'cancel') {
     // 演示请求后端做一些后端清理记录工作
@@ -106,7 +113,7 @@ const breadcrumbList = computed(() =>{
   // return route.matched.filter(item => item.path !== '/'
   //     && item.path !== '/home')
   //
-  console.log(router.getRoutes())
+  // console.log(router.getRoutes())
   return generateBreadcrumb()
 })
 
