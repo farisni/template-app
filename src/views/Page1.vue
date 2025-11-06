@@ -59,6 +59,17 @@
           <el-table-column prop="zip" label="Zip" />
         </el-table>
       </div>
+      <div id="pagination">
+        <el-pagination
+            v-model:current-page="currentPage8"
+            v-model:page-size="pageSize8"
+            :page-sizes="[100, 500, 1000, 5000]"
+            :background="true"
+            :pager-count="9"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="100000"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -66,6 +77,12 @@
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { useDefaultPopperOptions } from '@/utils/usePopperOptions'
+
+
+// 大量数据
+const currentPage8 = ref(1)
+const pageSize8 = ref(100)
+const pageSize4 = ref(100)
 
 const dateRange = ref([])
 const popperOptions = useDefaultPopperOptions()
@@ -99,14 +116,16 @@ const calculateTableHeight = () => {
     const searchArea = document.getElementById('search_area')
     const operationArea = document.getElementById('operation_area')
     const tableMain = document.getElementById('table_main')
+    const pagination = document.getElementById('pagination')
 
     if (searchArea && operationArea && tableMain) {
       const searchHeight = searchArea.offsetHeight
       const operationHeight = operationArea.offsetHeight
+      const paginationHeight = pagination.offsetHeight;
       const tableMainTop = tableMain.getBoundingClientRect().top
       const margin = 20 // 预留边距
 
-      tableHeight.value = windowHeight - tableMainTop - operationHeight - margin
+      tableHeight.value = windowHeight - tableMainTop - operationHeight - paginationHeight- margin
     }
   })
 }
@@ -122,26 +141,37 @@ onUnmounted(() => {
 </script>
 
 <style lang="less" scoped>
+// 定义高度变量
+@app-header-tags-height: 90px;      // header + tags 总高度
+@search-area-height: 55px;          // 搜索区域高度
+@search-area-margin-top: 5px;       // 搜索区域上边距
+@operation-area-height: 30px;       // 操作区域高度
+@table-main-margin-top: 10px;       // 表格主区域上边距
+@common-padding: 10px;              // 通用内边距
+@border-color: #EBEEF5;             // 边框颜色
+@background-color: #fff;            // 背景颜色
+@scroll-margin: 20px;               // 滚动边距
+
 .app-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 90px); /* 90px是header+tags的高度*/
+  height: calc(100vh - @app-header-tags-height);
 
   #search_area {
     display: flex;
     align-items: center;
     justify-content: start;
-    height: 55px;
+    height: @search-area-height;
     width: 100%;
     flex-shrink: 0;
-    margin-top: 5px;
-    border: 1px solid #EBEEF5;
-    background-color: #fff;
+    margin-top: @search-area-margin-top;
+    border: 1px solid @border-color;
+    background-color: @background-color;
 
     .el-form {
       height: 100%;
       width: 100%;
-      padding: 0 10px;
+      padding: 0 @common-padding;
 
       ::v-deep(.el-row) {
         height: 100%;
@@ -170,31 +200,31 @@ onUnmounted(() => {
   }
 
   #table_main {
-    margin-top: 10px;
-    border: 1px solid #EBEEF5;
-    background-color: #fff;
+    margin-top: @table-main-margin-top;
+    border: 1px solid @border-color;
+    background-color: @background-color;
     display: flex;
     flex-direction: column;
-    flex: 1; /* 占据剩余空间 */
-    min-height: 0; /* 重要：允许内部滚动 */
+    flex: 1;
+    min-height: 0;
+    margin-bottom: 10px;
 
     #operation_area {
-      height: 30px;
+      height: @operation-area-height;
       flex-shrink: 0;
-      padding: 10px;
+      padding: @common-padding;
       display: flex;
       align-items: center;
-      border-bottom: 1px solid #EBEEF5;
+      border-bottom: 1px solid @border-color;
     }
 
     #data_area {
-      flex: 1; /* 占据 table_main 的剩余空间 */
-      min-height: 0; /* 重要：允许内部滚动 */
+      flex: 1;
+      min-height: 0;
 
       ::v-deep(.el-table) {
         height: 100%;
 
-        /* 确保表头固定 */
         .el-table__header-wrapper {
           position: sticky;
           top: 0;
@@ -202,6 +232,13 @@ onUnmounted(() => {
         }
       }
     }
+
+    #pagination {
+      align-items: center;
+      justify-items: flex-end;
+      height: 40px;
+    }
   }
+
 }
 </style>
