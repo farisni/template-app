@@ -49,7 +49,8 @@ const handleClose = (tag, index) => {
 </script>
 <style lang="less" scoped>
 .tags{
-  padding: 10px;
+  height: 20px;
+  padding: 0 10px 10px 10px;
 
   .el-tag{
     margin-right: 15px;

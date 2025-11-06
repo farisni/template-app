@@ -24,4 +24,8 @@ import CommonTags from "@/components/CommonTags.vue";
 .el-header {
  padding: 0; // 去除header的外边距
 }
+.el-main {
+  padding: 0 10px 0 10px;
+  //background-color: #e4e7ed;
+}
 </style>
