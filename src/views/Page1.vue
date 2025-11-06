@@ -34,18 +34,24 @@
         </el-row>
       </el-form>
     </div>
+
     <div id="operation_area">
       <el-row>
-        <el-col :span="24">
-          <!--<div  style="background-color: red;height: 10px" />-->
+        <el-col :span="24" :push="4">
+          <el-button type="success" >
+            <el-icon><Plus /></el-icon>新建
+          </el-button>
         </el-col>
       </el-row>
     </div>
     <div id="table_area">
-      <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column prop="date" label="Date" width="180" />
-        <el-table-column prop="name" label="Name" width="180" />
-        <el-table-column prop="address" label="Address" />
+      <el-table stripe :data="tableData" style="width: 100%" height="250">
+        <el-table-column fixed prop="date" label="Date" width="150" />
+        <el-table-column prop="name" label="Name" width="120" />
+        <el-table-column prop="state" label="State" width="120" />
+        <el-table-column prop="city" label="City" width="320" />
+        <el-table-column prop="address" label="Address" width="600" />
+        <el-table-column prop="zip" label="Zip" />
       </el-table>
     </div>
   </div>
@@ -62,122 +68,168 @@ const tableData = [
   {
     date: '2016-05-03',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
   {
     date: '2016-05-02',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
   {
     date: '2016-05-04',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
   {
     date: '2016-05-01',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
   {
+    date: '2016-05-08',
+    name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
+  },
+  {
+    date: '2016-05-06',
+    name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
+  },
+  {
+    date: '2016-05-07',
+    name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
+  },{
     date: '2016-05-03',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
   {
     date: '2016-05-02',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
   {
     date: '2016-05-04',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
   {
     date: '2016-05-01',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
   {
+    date: '2016-05-08',
+    name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
+  },
+  {
+    date: '2016-05-06',
+    name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
+  },
+  {
+    date: '2016-05-07',
+    name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
+  },{
     date: '2016-05-03',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
   {
     date: '2016-05-02',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
   {
     date: '2016-05-04',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
   {
     date: '2016-05-01',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
   {
-    date: '2016-05-03',
+    date: '2016-05-08',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
   {
-    date: '2016-05-02',
+    date: '2016-05-06',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
   {
-    date: '2016-05-04',
+    date: '2016-05-07',
     name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036',
   },
 ]
 
@@ -186,10 +238,8 @@ const tableData = [
 .app-container {
   display: flex;
   flex-direction: column;// 垂直布局
-  height: 100%; /* 继承父元素高度的100% */
+  height: calc(100vh - 90px); /* 90px是header+tags的高度*/
 
-  //width: 100%;
-  //background-color: red;
 
   #search_area {
     display: flex;
@@ -200,8 +250,6 @@ const tableData = [
     flex-shrink: 0;
     margin-top: 5px;
     border: 1px solid #EBEEF5;
-    //border: 1px solid #a8abb2;
-    //box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.06); /* 轻微阴影 */
 
 
     background-color: #fff;
@@ -240,17 +288,25 @@ const tableData = [
     }
   }
 
-
   #operation_area {
-    height: 30px;
+    display: flex;
+    align-items: center;
+    height: 50px;
     flex-shrink: 0;
-    //background-color: #e4e7ed;
   }
 
   #table_area {
-    //background-color: #a8abb2;
-    flex: 1;  /* 占据剩余所有空间 */
-    overflow: auto; /* 🔥 内容超出时显示滚动条 */
+    flex: 1;               /* ✅ 占满剩余空间 */
+    overflow-y: auto;      /* ✅ 只让表格区域滚动 */
+    overflow-x: hidden;    /* 可选：防止横向滚动 */
+    background-color: #fff;
+    border: 1px solid #EBEEF5;
+
+    /* ✅ 修正 el-table 100% 高度显示 */
+    .el-table {
+      width: 100%;
+      min-height: 100%; /* 防止滚动时塌陷 */
+    }
   }
 }
 </style>
