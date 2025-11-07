@@ -1,5 +1,5 @@
 <template>
-  <div class="search-wrapper">
+  <div class="search-area">
     <el-form label-width="70px" >
       <!--5+7+6+6 每个col占据4-->
       <el-row :gutter="10" >
@@ -34,28 +34,92 @@
       </el-row>
     </el-form>
   </div>
-  <div class="table-wrapper">
-
+  <div class="table-area">
+    <!--列表操作-->
+    <div class="table-area_operation">
+      <el-row>
+        <el-col :span="6" class="btn-col">
+          <div class="btn-wrapper">
+            <el-button type="success" >
+              <el-icon><Plus /></el-icon>新建
+            </el-button>
+            <el-button type="danger" >
+              <el-icon><Delete /></el-icon>删除
+            </el-button>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+    <!--列表数据-->
+    <div class="table-area_data">
+        <el-table
+            stripe
+            :data="tableData"
+        >
+          <el-table-column fixed prop="date" label="Date" width="150" />
+          <el-table-column prop="name" label="Name" width="120" />
+          <el-table-column prop="state" label="State" width="120" />
+          <el-table-column prop="city" label="City" width="320" />
+          <el-table-column prop="address" label="Address" width="600" />
+          <el-table-column prop="zip" label="Zip" />
+        </el-table>
+    </div>
+    <!--分页-->
+    <div class="pagination" id="pagination">
+      <el-pagination
+          :current-page=currentPage
+          :page-size=pageSize
+          :page-sizes="[20, 50, 100, 300]"
+          :background="true"
+          :pager-count="9"
+          layout="total, prev, pager, next, jumper,sizes"
+          :total="1000"
+      />
+    </div>
   </div>
 </template>
 
 <script setup>
+import {ref} from "vue";
 
+const currentPage = ref(1)
+const pageSize = ref(20)
+
+const tableData = ref([
+  {
+    date: '2016-05-03',
+    name: 'Tom',
+    state: 'California',
+    city: 'Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles',
+    zip: 'CA 90036'
+  },
+  // 可以添加更多数据来测试滚动条
+  ...Array.from({ length: 30 }, (_, index) => ({
+    date: `2016-05-${String(index + 1).padStart(2, '0')}`,
+    name: `User${index + 1}`,
+    state: 'California',
+    city: 'Los Angeles',
+    address: `No. ${index + 1}, Grove St, Los Angeles`,
+    zip: 'CA 90036'
+  }))
+])
 </script>
 
 <style lang="less" scoped>
 
-
   // 如果row多行 不够高度 仅改这里就行
-  @search-wrapper-height:55px; // 可随意变动（有最低高度后，此高度不生效），table区域自适应
+  @search-wrapper-height:55px; // 固定高度，可改动 ！！可随意变动（有最低高度后，此高度不生效），table区域自适应
+  @table-area_operation-height:50px; // 固定高度, 可改动 ！！
+  /* 父级元素的高-search-wrapper（55+2） - 自身（10+2）- 底部稍微多余点空间 */
+  @table-area-height:calc(100% - (@search-wrapper-height + 2px) - 12px - 5px); // 有效
 
-  .search-wrapper {
+
+  .search-area {
     height: @search-wrapper-height;
     border: 1px solid #EBEEF5;
     display: flex;
     align-items: center;
-
-
     // 处理el-row的居中问题
     .el-form {
       flex: 1;
@@ -67,13 +131,11 @@
           }
         }
       }
-
       // 搜索按钮的列
       .btn-col {
         display: flex;
         justify-content: flex-end;
         align-items: center;
-
         .btn-wrapper {
           padding-right: 10px;
         }
@@ -83,11 +145,67 @@
 
   }
 
-  .table-wrapper {
-    /* 父级元素的高-search-wrapper（55+2） - 自身（10+2）- 底部稍微多余点空间 */
-    height: calc(100% - (@search-wrapper-height + 2px) - 12px - 5px);
+  .table-area {
+    height: @table-area-height; // 重要
     margin-top: 10px;
     border: 1px solid #EBEEF5;
+
+    /*列表操作区*/
+    .table-area_operation {
+      display: flex;
+      align-items: center;
+      height: @table-area_operation-height;
+      border-bottom: 1px solid #EBEEF5;
+      .el-row {
+        width: 100%;
+
+        // 按钮作为整体
+        .btn-col {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          .btn-wrapper {
+            padding-left: 10px;
+          }
+        }
+      }
+    }
+
+    /*列表数据区*/
+    .table-area_data {
+      height: calc(@table-area-height - 11px);
+      .el-table {
+        height: 100%;
+      }
+    }
+
+    /*分页区*/
+    .pagination {
+      height: 40px;
+      //display: flex;
+      //align-items: center;
+      //justify-items: flex-end;
+      //height: 40px;
+      .el-pagination {
+        //flex: 1;
+        ////height: 100%;
+        //height: 40px;
+        //padding-top: 2px;
+      }
+
+
+
+    }
+
+    #pagination {
+      //display: flex;
+      align-items: center;
+      justify-items: flex-end;
+      height: 40px;
+      //padding-top: 30px;
+    }
+
+
   }
 
 </style>

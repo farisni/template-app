@@ -15,7 +15,6 @@
                   end-placeholder="结束日期"
                   type="daterange"
                   range-separator="至"
-                  :popper-options="popperOptions"
               />
             </el-form-item>
           </el-col>
@@ -65,8 +64,8 @@
       </div>
       <div id="pagination">
         <el-pagination
-            v-model:current-page="currentPage8"
-            v-model:page-size="pageSize8"
+            v-model:current-page="currentPage"
+            v-model:page-size="pageSize"
             :page-sizes="[20, 50, 100, 300]"
             :background="true"
             :pager-count="9"
@@ -80,15 +79,13 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
-import { useDefaultPopperOptions } from '@/utils/usePopperOptions'
 
 
 // 大量数据
-const currentPage8 = ref(1)
-const pageSize8 = ref(20)
+const currentPage = ref(1)
+const pageSize = ref(20)
 
 const dateRange = ref([])
-const popperOptions = useDefaultPopperOptions()
 const tableHeight = ref(400) // 初始高度
 
 // 模拟表格数据
