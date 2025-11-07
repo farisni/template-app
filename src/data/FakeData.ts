@@ -109,7 +109,13 @@
             path: '/other/page2',
             name: '页面2',
             icon: 'setting',
-          }
+          },
+            {
+                id: "236",
+                path: '/other/CommonTable',
+                name: '列表模版',
+                icon: 'setting',
+            }
         ]
       }
     ]

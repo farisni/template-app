@@ -49,9 +49,7 @@ const handleClose = (tag, index) => {
 </script>
 <style lang="less" scoped>
 .tags{
-  height: 20px;
-  padding: 0 10px 10px 10px;
-
+  // tags 的宽高，边框交给父级处理
   .el-tag{
     margin-right: 15px;
     // 鼠标悬停:小手

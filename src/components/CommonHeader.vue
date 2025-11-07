@@ -123,7 +123,7 @@ const breadcrumbList = computed(() =>{
 <style lang="less" scoped>
 .header-container {
   background-color: #fff;
-  height: 50px;
+  height: 100%; /*继承父类*/
   display: flex; // 让hamburger和头像居中
   justify-content: space-between;
   align-items: center; //

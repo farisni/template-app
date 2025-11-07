@@ -21,11 +21,19 @@ import CommonTags from "@/components/CommonTags.vue";
 
 </script>
 <style lang="less" scoped>
+// 顶部
 .el-header {
- padding: 0; // 去除header的外边距
+  height: 50px;
+  padding: 0; // 去除header的内边距
 }
+// 标签
+.tags {
+  height: 20px;
+  padding: 10px 10px 12px 10px;
+}
+
 .el-main {
   padding: 0 10px 0 10px;
-  //background-color: #e4e7ed;
+  height: calc(100vh - 92px); // 100vh（屏幕总高）- 顶部 50px + tags（20 height + 10px+12px padding）
 }
 </style>

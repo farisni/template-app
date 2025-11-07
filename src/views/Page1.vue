@@ -19,7 +19,8 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="12" class="btn-area">
+          <!--:push=6 表示向右边移动6个栅栏-->
+          <el-col :span="6" class="btn-area" :push="6">
             <div class="btn-wrapper">
               <el-button type="primary" @click="">
                 <el-icon><Search /></el-icon>
@@ -39,8 +40,11 @@
       <div id="operation_area">
         <el-row>
           <el-col :span="24">
-            <el-button type="success">
+            <el-button type="success" >
               <el-icon><Plus /></el-icon>新建
+            </el-button>
+            <el-button type="danger" >
+              <el-icon><Delete /></el-icon>删除
             </el-button>
           </el-col>
         </el-row>
@@ -63,11 +67,11 @@
         <el-pagination
             v-model:current-page="currentPage8"
             v-model:page-size="pageSize8"
-            :page-sizes="[100, 500, 1000, 5000]"
+            :page-sizes="[20, 50, 100, 300]"
             :background="true"
             :pager-count="9"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="100000"
+            layout="total, prev, pager, next, jumper,sizes"
+            :total="1000"
         />
       </div>
     </div>
@@ -81,8 +85,7 @@ import { useDefaultPopperOptions } from '@/utils/usePopperOptions'
 
 // 大量数据
 const currentPage8 = ref(1)
-const pageSize8 = ref(100)
-const pageSize4 = ref(100)
+const pageSize8 = ref(20)
 
 const dateRange = ref([])
 const popperOptions = useDefaultPopperOptions()
@@ -142,21 +145,16 @@ onUnmounted(() => {
 
 <style lang="less" scoped>
 // 定义高度变量
-@app-header-tags-height: 90px;      // header + tags 总高度
 @search-area-height: 55px;          // 搜索区域高度
 @search-area-margin-top: 5px;       // 搜索区域上边距
 @operation-area-height: 30px;       // 操作区域高度
 @table-main-margin-top: 10px;       // 表格主区域上边距
 @common-padding: 10px;              // 通用内边距
 @border-color: #EBEEF5;             // 边框颜色
-@background-color: #fff;            // 背景颜色
-@scroll-margin: 20px;               // 滚动边距
 
 .app-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - @app-header-tags-height);
-
   #search_area {
     display: flex;
     align-items: center;
@@ -164,15 +162,16 @@ onUnmounted(() => {
     height: @search-area-height;
     width: 100%;
     flex-shrink: 0;
-    margin-top: @search-area-margin-top;
+    //margin-top: @search-area-margin-top;
     border: 1px solid @border-color;
-    background-color: @background-color;
 
     .el-form {
       height: 100%;
       width: 100%;
       padding: 0 @common-padding;
 
+
+      // 兼容el-row的居中问题
       ::v-deep(.el-row) {
         height: 100%;
         display: flex;
@@ -186,6 +185,8 @@ onUnmounted(() => {
         align-items: center;
       }
 
+
+      // 搜索按钮
       .btn-area {
         display: flex;
         justify-content: flex-end;
@@ -202,7 +203,6 @@ onUnmounted(() => {
   #table_main {
     margin-top: @table-main-margin-top;
     border: 1px solid @border-color;
-    background-color: @background-color;
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -220,20 +220,21 @@ onUnmounted(() => {
 
     #data_area {
       flex: 1;
-      min-height: 0;
-
-      ::v-deep(.el-table) {
-        height: 100%;
-
-        .el-table__header-wrapper {
-          position: sticky;
-          top: 0;
-          z-index: 1;
-        }
-      }
+      //min-height: 0;
+      //
+      //::v-deep(.el-table) {
+      //  height: 100%;
+      //
+      //  .el-table__header-wrapper {
+      //    position: sticky;
+      //    top: 0;
+      //    z-index: 1;
+      //  }
+      //}
     }
 
     #pagination {
+      //display: flex;
       align-items: center;
       justify-items: flex-end;
       height: 40px;
