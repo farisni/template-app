@@ -34,7 +34,7 @@ export const componentMap: Record<string, any> = {
     '/mall/add': () => import('@/views/GoodsAdd.vue'),
     '/user': () => import('@/views/User.vue'),
     '/other/page1': () => import('@/views/Page1.vue'),
-    '/other/CommonTable': () => import('@/views/CommonTable.vue'),
+    '/other/CommonTable': () => import('@/views/ExampleTable.vue'),
 }
 
 

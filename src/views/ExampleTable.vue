@@ -1,15 +1,15 @@
 <template>
   <div class="search-area">
-    <el-form label-width="70px" >
+    <el-form>
       <!--5+7+6+6 每个col占据4-->
       <el-row :gutter="10" >
         <el-col :span="5" >
           <el-form-item label="关键字">
-            <el-input placeholder="请输入关键字" />
+            <el-input placeholder="Name/City/Address" />
           </el-form-item>
         </el-col>
         <el-col :span="7" >
-          <el-form-item label="操作时间">
+          <el-form-item label="录入时间">
             <el-date-picker
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
@@ -46,8 +46,8 @@
     <div class="table-area_data">
       <el-table
           stripe
-          :data="tableData"
-          :header-cell-style="{color: '#54565a'}">
+          :data="state.tableData"
+          >
         <el-table-column type="selection" width="55" />
         <el-table-column fixed prop="date" label="Date" width="150" />
         <el-table-column prop="name" label="Name" width="120" />
@@ -60,46 +60,44 @@
     <!--分页-->
     <div class="table-pagination" >
       <el-pagination
-          v-model:current-page="currentPage"
-          v-model:page-size="pageSize"
+          v-model:current-page="state.currentPage"
+          v-model:page-size="state.pageSize"
           :page-sizes="[20, 50, 100, 300]"
           :background="true"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400"/>
+          :total="state.total"/>
     </div>
   </div>
 </template>
 
 <script setup>
 import {ref} from "vue";
+import {getUserList} from "@/api/exampleApi"
+
+const state = ref(
+    {
+      currentPage: 3,
+      pageSize: 20,
+      total: 300,
+      tableData: []
+    }
+)
+
+// 直接在 setup 中执行，相当于 created
+const fetchData = async () => {
+  // 获取数据的逻辑
+  state.value.tableData = await getUserList()
+}
+
+// 立即执行，相当于 created
+fetchData()
 
 
-const currentPage = ref(1)
-const pageSize = ref(20)
 
-
-const tableData = ref([
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036'
-  },
-  // 可以添加更多数据来测试滚动条
-  ...Array.from({ length: 30 }, (_, index) => ({
-    date: `2016-05-${String(index + 1).padStart(2, '0')}`,
-    name: `User${index + 1}`,
-    state: 'California',
-    city: 'Los Angeles',
-    address: `No. ${index + 1}, Grove St, Los Angeles`,
-    zip: 'CA 90036'
-  }))
-])
 </script>
 
 <style lang="less" scoped>
+
 // 如果row多行 不够高度 仅改这里就行
 @search-wrapper-height:55px; // 固定高度，可改动 ！！可随意变动（有最低高度后，此高度不生效），table区域自适应
 @table-area_operation-height:50px; // 固定高度, 可改动 ！！ 列表操作区域
@@ -111,6 +109,13 @@ const tableData = ref([
   border: 1px solid #EBEEF5;
   display: flex;
   align-items: center;
+  // label 颜色
+  :deep(.el-form-item__label) {
+    color: #54565a;
+    font-weight: 600;
+    width: 70px;
+  }
+
   // 处理el-row的居中问题
   .el-form {
     flex: 1;
@@ -159,6 +164,12 @@ const tableData = ref([
     overflow: hidden; // 主要是限制el-table的自动溢出
     .el-table {
       height: 100%;
+
+      // 表头字体
+      :deep(.el-table__header .el-table__cell) {
+        color: #54565a;
+        font-weight: 600;
+      }
     }
   }
 
