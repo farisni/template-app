@@ -19,7 +19,7 @@
           </el-form-item>
         </el-col>
         <!--:push=6 表示向右边移动6个栅栏-->
-        <el-col :span="6" class="btn-col" :push="6">
+        <el-col :span="12" class="btn-col" >
           <div class="btn-wrapper">
             <el-button type="primary" @click="">
               <el-icon><Search /></el-icon>
@@ -66,22 +66,10 @@
     </div>
     <!--分页-->
     <div class="table-pagination" >
-      <!--<el-pagination layout="prev, pager, next" :total="50" />-->
-
-      <!--<el-pagination-->
-      <!--    :current-page=currentPage-->
-      <!--    :page-size=pageSize-->
-      <!--    :page-sizes="[20, 50, 100, 300]"-->
-      <!--    :background="true"-->
-      <!--    :pager-count="9"-->
-      <!--    layout="total, prev, pager, next, jumper,sizes"-->
-      <!--    :total="1000"-->
-      <!--/>-->
-
       <el-pagination
           v-model:current-page="currentPage"
           v-model:page-size="pageSize"
-          :page-sizes="[100, 200, 300, 400]"
+          :page-sizes="[20, 50, 100, 300]"
           :background="true"
           layout="total, sizes, prev, pager, next, jumper"
           :total="400"
@@ -123,11 +111,11 @@ const tableData = ref([
 
   // 如果row多行 不够高度 仅改这里就行
   @search-wrapper-height:55px; // 固定高度，可改动 ！！可随意变动（有最低高度后，此高度不生效），table区域自适应
+
+  @table-area-height:calc(100% - (@search-wrapper-height + 2px) - 12px - 5px); // 有效
   @table-area_operation-height:50px; // 固定高度, 可改动 ！！ 列表操作区域
 
   /* 父级元素的高-search-wrapper（55+2） - 自身（10+2）- 底部稍微多余点空间 */
-  @table-area-height:calc(100% - (@search-wrapper-height + 2px) - 12px - 5px); // 有效
-
 
   .search-area {
     height: @search-wrapper-height;
@@ -163,8 +151,6 @@ const tableData = ref([
     height: @table-area-height; // 重要
     margin-top: 10px;
     border: 1px solid #EBEEF5;
-    //display: flex;
-    //flex-direction: column;
 
     /*列表操作区*/
     .table-area_operation {
@@ -177,10 +163,11 @@ const tableData = ref([
 
         // 按钮作为整体
         .btn-col {
-          display: flex;
-          justify-content: flex-start;
+          //display: flex;
+          //justify-content: flex-start;
           align-items: center;
           .btn-wrapper {
+            //justify-content: flex-start;
             padding-left: 10px;
           }
         }
@@ -198,12 +185,10 @@ const tableData = ref([
     /*分页区*/
     .table-pagination {
       height: 45px;
-      align-items: center;
-      justify-items: flex-end;
-      flex-shrink: 0; // 防止父类高度压缩
       .el-pagination {
         //flex: 1;
         height: 100%;
+        justify-content: right; //本身内部向右靠齐
       }
     }
 

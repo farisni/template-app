@@ -26,7 +26,7 @@ import CommonTags from "@/components/CommonTags.vue";
   height: 50px;
   padding: 0; // 去除header的内边距
 }
-// 标签
+// 标签，实际高 height + 上下padding
 .tags {
   height: 20px;
   padding: 10px 10px 12px 10px;
