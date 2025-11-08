@@ -58,9 +58,26 @@ const handleMenuItemClick = (item,event) => {
 </script>
 <style lang="less" scoped>
 
-.el-menu-item, .el-sub-menu  {
-  span {
-    padding-left: 5px;
+@subMenuBg:#1f2d3d;
+@subMenuHover:#001528;
+
+.el-menu {
+  & .nest-menu .el-sub-menu > .el-sub-menu__title,
+  & .el-sub-menu .el-menu-item {
+    background-color: @subMenuBg ;
+
+    &:hover {
+      background-color: @subMenuHover ;
+    }
+  }
+
+  .el-menu-item, .el-sub-menu  {
+    //background-color: #1f2d3d;
+    span {
+      padding-left: 5px;
+    }
   }
 }
+
+
 </style>
