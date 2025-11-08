@@ -46,7 +46,8 @@
     <div class="table-area_data">
       <el-table
           stripe
-          :data="tableData">
+          :data="tableData"
+          :header-cell-style="{color: '#54565a'}">
         <el-table-column type="selection" width="55" />
         <el-table-column fixed prop="date" label="Date" width="150" />
         <el-table-column prop="name" label="Name" width="120" />
@@ -71,10 +72,10 @@
 
 <script setup>
 import {ref} from "vue";
-import SimpleBar from 'simplebar';
+
+
 const currentPage = ref(1)
 const pageSize = ref(20)
-// const size = ref<ComponentSize>('default')
 
 
 const tableData = ref([
@@ -161,7 +162,6 @@ const tableData = ref([
       height: 100%;
     }
   }
-
 
   /*分页区*/
   .table-pagination {
