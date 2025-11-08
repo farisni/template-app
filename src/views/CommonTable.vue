@@ -151,13 +151,12 @@ const tableData = ref([
     padding: 0 10px; // 内边距
     display: flex;
     align-items: center;
-    //line-height: @table-area_operation-height; // 也可以上下居中，使用单行文本
-
+    border-bottom: 1px solid #EBEEF5 ;
   }
 
   /*列表数据区*/
   .table-area_data {
-    flex: 1; // 占据上下位置的剩余部分
+    flex: 1; // 占据上下固定位置的剩余部分
     overflow: hidden; // 主要是限制el-table的自动溢出
     .el-table {
       height: 100%;
