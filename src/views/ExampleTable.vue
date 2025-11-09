@@ -20,7 +20,7 @@
         </el-col>
         <!--:push=6 表示向右边移动6个栅栏-->
         <el-col :span="12" class="btn-col" >
-            <el-button type="primary" @click="">
+            <el-button type="primary" @click="fetchData">
               <el-icon><Search /></el-icon>
               搜索
             </el-button>
@@ -35,7 +35,7 @@
   <div class="table-area">
     <!--列表操作-->
     <div class="table-area_operation">
-      <el-button type="success" >
+      <el-button type="success">
         <el-icon><Plus /></el-icon>新建
       </el-button>
       <el-button type="danger" >
@@ -92,8 +92,6 @@ const fetchData = async () => {
 // 立即执行，相当于 created
 fetchData()
 
-
-
 </script>
 
 <style lang="less" scoped>
@@ -137,8 +135,6 @@ fetchData()
       }
     }
   }
-
-
 }
 
 .table-area {

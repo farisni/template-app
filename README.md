@@ -7,6 +7,9 @@ npm run dev
 npm run build
 ```
 
+## Issues
+
+1、滚动条滑块固定大小问题没有找到解决方案
 
 
 https://gitee.com/karshey/general-background
