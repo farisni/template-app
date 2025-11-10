@@ -24,6 +24,7 @@
         </el-table>
       </el-card>
     </el-col>
+    <!---->
     <el-col :span="16">
       <div class="num">
         <el-card v-for="item in state.countData" :key="item.name" :body-style="{ display: 'flex', padding: 0 }">
@@ -55,19 +56,16 @@
   </el-row>
 </template>
 <script setup>
-import {onMounted, ref} from 'vue'
+import {onMounted, reactive, ref} from 'vue'
 import * as echarts from 'echarts'
 import {getStatisticalData} from '@/api/home'
 
 const {data} = getStatisticalData()
 
 import order from '@/data/order'
-import userData from '@/data/userData'
-import videoData from '@/data/videoData'
 
 
 import TableData from '@/data/TableData'
-import CountData from '@/data/CountData'
 
 const state = ref({
   tableLabel: {
@@ -77,7 +75,7 @@ const state = ref({
     totalBuy: '总购买'
   },
   tableData: [],
-  countData: CountData
+  countData: import('@/data/CountData')
 })
 
 
@@ -123,7 +121,7 @@ onMounted(() => {
   // 使用刚指定的配置项和数据显示图表。
   chart1.setOption(chart1Option);
 
-  //
+
   // // 柱状图
   // const chart2 = echarts.init(echarts2.value)
   // const echarts2Option = userData
@@ -157,6 +155,29 @@ onMounted(() => {
   // chart3.setOption(echarts3Option);
 
 })
+
+// 图标数据
+let orderData = reactive({
+  xData: [],
+  series: []
+})
+let userData = reactive({
+  xData: [],
+  series: []
+})
+let videoData = reactive({
+  series: []
+})
+
+const getChartData = async ()=> {
+  let result = await getStatisticalData()
+  console.log(result)
+  let orderRes = result.data.orderData;
+  let userRes  = result.data.userData;
+  let videoRes = result.data.videoData;
+
+  orderData.xData = orderRes
+}
 
 </script>
 <style lang="less" scoped>

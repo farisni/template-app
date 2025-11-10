@@ -7,18 +7,13 @@ import {userMenus} from "@/data/FakeData";
 Mock.mock('/user/login', 'post', function (options){
     let body = JSON.parse(options.body)
     let username = body.username
-
-
     const user = userMenus.find(user => user.name === username)
-
     if (user) {
         return {code: 200, data: {token: Mock.Random.guid(),
             message: '登录成功',
             userInfo: {id:"1", username: user.name, menu:user.menu}}}
     } else {
         return {code: 500, data: {message: '登录失败'}}}
-
-
 }
 
     )
@@ -52,5 +47,8 @@ Mock.mock('/user/logout', 'logout', {
         message: '已退出登录'
     }
 })
+
+
+
 
 export default Mock
