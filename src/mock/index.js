@@ -1,6 +1,6 @@
 import Mock from "mockjs";
-import {userMenus} from "@/data/fakeData.js";
-import homeData from '@/data/homeData.js'
+import {userMenus} from "@/mock/data/fakeData.js";
+import homeData from '@/mock/data/homeData.js'
 
 
 /*

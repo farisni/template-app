@@ -15,7 +15,7 @@
         <div class="user">
           <!--img的图片在资源中-->
           <img
-              src="../../assets/img/user.png"
+              src="@/assets/images/1.png"
               alt=""
           >
           <div class="userinfo">
