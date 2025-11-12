@@ -33,7 +33,7 @@
       <el-card
           style="margin-top:20px"
           shadow="hover"
-          height="500px"
+          height="600px"
       >
         <!--表格的数据和列的数据，等下定义-->
         <el-table :data="tableData">
