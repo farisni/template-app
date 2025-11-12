@@ -9,9 +9,9 @@
       text-color="#BFCBD9"
   >
     <div id="title">
-      <img src="../assets/images/1.png" alt="">
+      <img src="../assets/images/logo.png" alt="">
       <!---->
-      <span v-if="!appStore.isCollapse">欢迎你，{{ appStore.userInfo.username }} ！</span>
+      <span v-if="!appStore.isCollapse">麦子后台管理</span>
     </div>
     <!--引入递给菜单组件-->
     <!--从pinia 的持久化自动拿到Menu localStorage获取数据或者app.ts-->
@@ -66,17 +66,17 @@ const handleMenuClick = (item) => {
 
     img {
       display: flex;
-      width: 45px;
-      height: 45px;
-      /*变圆型头像*/
-      border-radius: 50%;
+      width: 50px;
+      height: 50px;
     }
 
     span {
       /*文字禁止换行*/
-      color: #BFCBD9;
+      color: #fff;
       white-space: nowrap;
-      padding-left: 10px;
+      font-size: 18px;
+      font-weight: 500;
+      //color:
       /*先把文字隐藏*/
       //display: none;
     }
