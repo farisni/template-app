@@ -74,4 +74,8 @@ Mock.mock('/test-api', 'get', {
 })
 
 
+// 操作日志
+import systemData from '@/mock/data/systemData'
+Mock.mock(/\/admin\/system\/sysOperLog/, "get",systemData.operLogList);
+
 export default Mock

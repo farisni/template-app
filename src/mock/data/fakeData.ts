@@ -32,6 +32,7 @@
         name: '用户管理',
         icon: 'UserFilled'
     },
+
     {
         id:"4",
         name: '其他',
@@ -92,6 +93,20 @@
         name: '用户管理',
         icon: 'UserFilled'
       },
+        {
+            id:"7",
+            name: '系统管理',
+            path: '/system',
+            icon: 'Setting',
+            children: [
+                {
+                    id:"",
+                    path: '/system/operLogList',
+                    name: '操作日志',
+                    icon: 'DocumentCopy',
+                }
+            ]
+        },
       {
         id: "4",
         name: '其他',

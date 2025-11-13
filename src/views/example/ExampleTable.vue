@@ -97,8 +97,8 @@ fetchData()
 <style lang="scss" >
 // 引人公共样式 不要写scoped
 
-$search-wrapper-height:120px;
-$table-area_operation-height:232px;
+$search-wrapper-height:55px;
+$table-area_operation-height:50px;
 @import '@/styles/commonTable.scss'; // 引人公共table样式
 
 .search-area {
