@@ -3,10 +3,11 @@ import { ElMessage } from 'element-plus';
 
 // 开发环境判断
 const isDev = import.meta.env.DEV;
+const isMock = import.meta.env.VITE_APP_IS_MOCK
 
 // 创建 axios 实例
 const service = axios.create({
-    baseURL: isDev ? '' : import.meta.env.VITE_APP_BASE_API, // 使用环境变量,注意是VITE开头
+    baseURL: (isDev&&isMock==='true') ? '' : import.meta.env.VITE_APP_BASE_API, // 使用环境变量,注意是VITE开头
     timeout: 10000, // 请求超时时间
 });
 

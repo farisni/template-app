@@ -28,7 +28,7 @@
             <el-icon><Search /></el-icon>
             搜索
           </el-button>
-          <el-button @click="">
+          <el-button @click="reset">
             <el-icon><Refresh /></el-icon>
             重置
           </el-button>
@@ -48,19 +48,6 @@
     </div>
     <!--列表数据-->
     <div class="table-area_data">
-      <!--<el-table-->
-      <!--    stripe-->
-      <!--    :data="state.tableData"-->
-      <!--&gt;-->
-      <!--  <el-table-column type="selection" width="55" />-->
-      <!--  <el-table-column fixed prop="date" label="Date" width="150" />-->
-      <!--  <el-table-column prop="name" label="Name" width="120" />-->
-      <!--  <el-table-column prop="state" label="State" width="120" />-->
-      <!--  <el-table-column prop="city" label="City" width="320" />-->
-      <!--  <el-table-column prop="address" label="Address" width="600" />-->
-      <!--  <el-table-column prop="zip" label="Zip" />-->
-      <!--</el-table>-->
-
       <el-table
           v-loading="state.listLoading"
           :data="state.tableData"
@@ -76,12 +63,12 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="title" label="系统模块" />
-        <el-table-column prop="operatorType" label="操作类型" />
-        <el-table-column prop="businessType" label="请求方式" />
-        <el-table-column prop="operUrl" label="请求路径" />
-        <el-table-column prop="operName" label="操作人员" />
-        <el-table-column prop="operIp" label="操作IP"/>
+        <el-table-column prop="title" label="系统模块" width="90"/>
+        <el-table-column prop="operatorType" label="操作类型" width="90" />
+        <el-table-column prop="businessType" label="请求方式" width="85"/>
+        <el-table-column prop="operUrl" label="请求路径" width="380" show-overflow-tooltip/>
+        <el-table-column prop="operName" label="操作人员" width="85"/>
+        <el-table-column prop="operIp" label="操作IP" width="120"/>
 
         <el-table-column prop="status" label="操作状态" >
           <template  v-slot="scope">
@@ -91,7 +78,7 @@
         </el-table-column>
 
         <el-table-column prop="createTime" label="创建时间" />
-        <el-table-column label="操作" width="130">
+        <el-table-column label="操作" width="130" fixed="right">
           <template v-slot="scope">
             <el-button type="text" @click="showInfo(scope.row.id)">详情</el-button>
           </template>
@@ -147,6 +134,14 @@ fetchData()
 const showInfo = (id) => {
   console.log("详情....")
 }
+
+const reset = ()=>{
+  state.value.searchObj = {}
+  fetchData()
+}
+
+
+
 
 </script>
 

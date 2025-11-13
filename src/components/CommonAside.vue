@@ -9,9 +9,9 @@
       text-color="#BFCBD9"
   >
     <div id="title">
-      <img src="../assets/images/logo2.png" alt="">
+      <img class="logo" src="../assets/images/logo2.png" alt="">
       <!---->
-      <span v-if="!appStore.isCollapse">地那拉权限管理</span>
+      <img class="logo-text"  v-if="!appStore.isCollapse" src="../assets/images/logo-text.png" alt="">
     </div>
     <!--引入递给菜单组件-->
     <!--从pinia 的持久化自动拿到Menu localStorage获取数据或者app.ts-->
@@ -64,21 +64,15 @@ const handleMenuClick = (item) => {
     align-items: center;
     padding: 10px;
 
-    img {
-      display: flex;
+    .logo {
+      //display: flex;
       width: 45px;
       height: 45px;
     }
 
-    span {
-      /*文字禁止换行*/
-      color: #fff;
-      white-space: nowrap;
-      font-size: 17px;
-      font-weight: 500;
-      //color:
-      /*先把文字隐藏*/
-      //display: none;
+    .logo-text {
+      height: 33px;
+      width: 135px;
     }
   }
 

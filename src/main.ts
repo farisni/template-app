@@ -2,6 +2,8 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import '@/mock/index.js' // 引入mock文件  mock 方式，正式发布时，注释掉该处即可
 import ElementPlus from 'element-plus' // 引入ElementPlus
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+
 import 'element-plus/dist/index.css'
 import { createPinia } from 'pinia' // 状态管理
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
@@ -27,7 +29,9 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 
-app.use(ElementPlus)
+app.use(ElementPlus, {
+    locale: zhCn, // 中文本地化
+} as any)
 app.use(pinia)
 // app.use(router)
 
