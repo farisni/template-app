@@ -72,7 +72,7 @@
 
 <script setup>
 import {ref} from "vue";
-import exampleApi from "@/api/exampleApi"
+import exampleApi from "@/api/exampleApi.js"
 
 const state = ref(
     {
@@ -94,89 +94,20 @@ fetchData()
 
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" >
+// 引人公共样式 不要写scoped
 
-// 如果row多行 不够高度 仅改这里就行
-@search-wrapper-height:55px; // 固定高度，可改动 ！！可随意变动（有最低高度后，此高度不生效），table区域自适应
-@table-area_operation-height:50px; // 固定高度, 可改动 ！！ 列表操作区域
-// table 区域高度 = 父级元素的高-search-wrapper（55+2） - 自身（10+2）- 底部稍微多余点空间
-@table-area-height:calc(100% - (@search-wrapper-height + 2px) - 12px - 5px); //
+$search-wrapper-height:120px;
+$table-area_operation-height:232px;
+@import '@/styles/commonTable.scss'; // 引人公共table样式
 
 .search-area {
-  height: @search-wrapper-height;
-  border: 1px solid #EBEEF5;
-  display: flex;
-  align-items: center;
-  // label 颜色
-  :deep(.el-form-item__label) {
-    color: #54565a;
-    font-weight: 600;
-    width: 70px;
-  }
-
-  // 处理el-row的居中问题
-  .el-form {
-    flex: 1;
-    .el-row{
-      padding: 5px 0 5px 0;
-      .el-col{
-        .el-form-item {
-          margin: 0;
-        }
-      }
-    }
-    // 搜索按钮的列
-    .btn-col {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      .el-button:last-child  {
-        margin-right: 10px;
-      }
-    }
-  }
+  height: $search-wrapper-height; // 覆盖父类
 }
 
-.table-area {
-  display: flex;
-  flex-direction: column;
-  height: @table-area-height; // 重要
-  margin-top: 10px;
-  border: 1px solid #EBEEF5;
-
-  /*列表操作区*/
-  .table-area_operation {
-    height: @table-area_operation-height;
-    flex-shrink: 0; /* 禁止高度压缩 */
-    padding: 0 10px; // 内边距
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #EBEEF5 ;
-  }
-
-  /*列表数据区*/
-  .table-area_data {
-    flex: 1; // 占据上下固定位置的剩余部分
-    overflow: hidden; // 主要是限制el-table的自动溢出
-    .el-table {
-      height: 100%;
-
-      // 表头字体
-      :deep(.el-table__header .el-table__cell) {
-        color: #54565a;
-        font-weight: 600;
-      }
-    }
-  }
-
-  /*分页区*/
-  .table-pagination {
-    height: 45px;
-    line-height: 45px; // 单个行，不使用flex也可以上下居中
-    .el-pagination{
-      float: right;
-    }
-  }
-
+.table-area_operation {
+  height: $table-area_operation-height; // 覆盖父类
 }
+
+
 </style>
