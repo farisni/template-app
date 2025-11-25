@@ -39,7 +39,7 @@ app.use(pinia)
 
 async function bootstrap() {
     const token = localStorage.getItem('token')
-    if (token) {
+    if (token && token!=="") {
         const store = JSON.parse(localStorage.getItem('app-store') || '{}')
         const menu = store?.userInfo?.menu
         if (menu && menu.length) {

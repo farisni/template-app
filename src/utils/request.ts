@@ -3,11 +3,11 @@ import { ElMessage } from 'element-plus';
 
 // 开发环境判断
 const isDev = import.meta.env.DEV;
-const isMock = import.meta.env.VITE_APP_IS_MOCK
+
 
 // 创建 axios 实例
 const service = axios.create({
-    baseURL: (isDev&&isMock==='true') ? '' : import.meta.env.VITE_APP_BASE_API, // 使用环境变量,注意是VITE开头
+    baseURL: import.meta.env.VITE_APP_BASE_API, // 使用环境变量,注意是VITE开头
     timeout: 10000, // 请求超时时间
 });
 
@@ -24,7 +24,7 @@ service.interceptors.request.use(
         // 添加 token
         const token = localStorage.getItem('token');
         if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`;
+            config.headers['Authorization'] = `Bearer ${JSON.parse(token).token}`;
         }
 
         // 添加时间戳防止缓存
@@ -52,7 +52,7 @@ service.interceptors.response.use(
         const res = response.data;
 
         // 根据后端返回格式调整
-        if (res.code === 200 || res.success) {
+        if (res.code === 200 || res.code === 0 || res.success) {
             return res;
         } else {
             ElMessage.error(res.message || '请求失败');

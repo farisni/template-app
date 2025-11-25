@@ -56,8 +56,7 @@
                       type="primary"
                       :disabled="data.countdown > 0"
                       @click="getSMS"
-                      class="captcha-btn"
-                  >
+                      class="captcha-btn">
                     {{ data.countdown > 0 ? `${data.countdown}s后重新获取` : '获取验证码' }}
                   </el-button>
                 </template>
@@ -81,8 +80,9 @@ import { ref } from 'vue'
 import CaptchaCode from 'vue-captcha-code' // 模拟图形验证码，实际后端获取
 import { ElMessage } from 'element-plus'
 import router, {addDynamicFLatRoutes} from "@/router/index.js";
-import api from '@/api/userApi'; // 导入 API 方法
 import { useAppStore } from '@/stores/app'
+import api from '@/api/userApi'; // 导入 API 方法
+
 
 
 const appStore = useAppStore()
@@ -95,7 +95,7 @@ const data = ref({
   loading: false, // 登录状态
   user:{
     username: 'admin',
-    password: '1',
+    password: '123456',
     phone: '',
     smsCode: ''
   },
@@ -159,16 +159,20 @@ const doLogin = async () =>{
 
     // 执行登录Api请求，获取token存放，跳转/home
     // 从定义的data中拿数据，而不是表单引用
-    const response = await api.login(data.value.user) // api/userData.ts
-    console.log(response.data.userInfo.username + " 已登录...")
+    const loginRes = await api.login(data.value.user) // api/userData.ts
+    // 存token
+    // localStorage.setItem("token",response.data.token)
+    appStore.setToken(loginRes.data.token);
+    // console.log(appStore.token)
+    // appStore.setToken(response.data.token)
+    const userRes = await api.getUserInfo()
+    console.log(userRes.data.username + " 已登录...")
     // 导航守卫
     data.loading = true
-    // 存token
-    localStorage.setItem("token",response.data.token)
-    appStore.setUserInfo(response.data.userInfo)
+    appStore.setUserInfo(userRes.data)
     // 通过app.ts persist 放入localStorage
     // 添加平铺动态路由
-    addDynamicFLatRoutes(response.data.userInfo.menu)
+    addDynamicFLatRoutes(userRes.data.menu)
 
     ElMessage.success('登录成功')
     // 跳转首页
@@ -195,8 +199,6 @@ const doLogin = async () =>{
   height: 100vh;           /* 全屏高度 */
   width: 100vw;            /* 全屏宽度 */
   background-color: #2D3A4B;
-
-
 }
 
 #login-card {
@@ -218,7 +220,7 @@ const doLogin = async () =>{
     height: 300px;
 
     img {
-      padding: 15px; /* 图片内容与边框的距离 */
+      padding: 10px; /* 图片内容与边框的距离 */
       border: 1px solid #d1d1d1; /* 浅灰色边框 */
       border-radius: 10px; /* 可选：添加圆角 */
       width: 100%;      // 使用百分比，更灵活

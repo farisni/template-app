@@ -1,8 +1,8 @@
 <template>
   <div class="tags">
     <el-tag v-for="(tag, index) in appStore.tagsData" :key="tag.path"
-            :closable="tag.path !== '/home'" :type="tagsType[index%5]"
-            :effect="tag.path === route.path ? 'dark' : 'light'"
+            :closable="tag.path !== '/home'"
+            :type="tag.path === route.path ? 'primary' : 'info'"
             @click="changeRoute(tag)" @close="handleClose(tag,index)">
       {{ tag.name }}
     </el-tag>
@@ -17,7 +17,8 @@ import { useAppStore } from '@/stores/app'
 
 const route = useRoute()
 const appStore = useAppStore()
-
+// el-tag  :effect="tag.path === route.path ? 'dark' : 'light'"  被激活路径背景色
+// 如果想多个颜色的tag，在el-tag上添加:type="tagsType[index%5]"
 const tagsType = ['primary', 'success', 'info', 'warning', 'danger']
 
 // 点击标签，跳转路由

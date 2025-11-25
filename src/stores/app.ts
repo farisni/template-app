@@ -12,13 +12,14 @@ export const useAppStore = defineStore('app', {
             avatar: '',
             menu:[]
         },
+        token:"",
         tagsData: [
             {
                 id: "1",
                 path: '/home',
                 name: '首页',
             }
-        ]
+        ],
     }
     ),
 
@@ -53,7 +54,12 @@ export const useAppStore = defineStore('app', {
                 ...userInfo       // 用新数据覆盖
             }
         },
+        setToken(token:string) {
+          this.token = token
+        },
         clearPersistedData() {
+            // 重置内存状态
+            this.$reset()
             localStorage.removeItem("token")
             localStorage.removeItem('app-store')
             // 只保留第一个标签
@@ -62,9 +68,13 @@ export const useAppStore = defineStore('app', {
 
     },
     // 自动持久化到 localStorage
-    persist: {
+    persist: [{
         key: 'app-store',
         storage: localStorage,
-        paths: ['userInfo', 'isCollapse'], // 只持久化这些字段
-    }
+        pick: ['userInfo', 'isCollapse'], // 只持久化这些字段，注意pick和paths的区别
+    },{
+        key: 'token',
+        storage:localStorage,
+        pick: ['token']
+    }]
 })
