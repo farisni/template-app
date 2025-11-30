@@ -60,8 +60,10 @@
         <!--表头-->
         <el-table-column prop="username" label="用户名" />
         <el-table-column prop="name" label="姓名"/>
+        <el-table-column prop="sex" label="性别"/>
         <el-table-column prop="phone" label="手机" />
         <el-table-column prop="email" label="邮箱" />
+        <el-table-column prop="dept" label="部门" />
         <el-table-column prop="role" label="角色" />
         <el-table-column label="启用状态" width="90">
           <template #default="scope">
@@ -72,12 +74,33 @@
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" width="190"/>
-        <el-table-column label="操作" width="190" fixed="right">
-          <template v-slot="scope">
-            <!--@click="info(scope.row.id)"-->
-            <el-button type="text" >详情</el-button>
-            <el-button type="text" @click="edit(scope.row.id)">修改</el-button>
-            <el-button type="text" @click="assignRole(scope.row)">分配角色</el-button>
+        <el-table-column label="操作" width="220" fixed="right">
+          <template #default="scope">
+            <el-button
+                type="primary"
+                size="small"
+                link
+                icon="Tickets"
+            >
+              详情
+            </el-button>
+            <el-button
+                type="primary"
+                size="small"
+                link
+                icon="edit"
+                @click="edit(scope.row.id)"
+            >
+              编辑
+            </el-button>
+            <el-button
+                type="primary"
+                size="small"
+                link
+                icon="position"
+            >
+              分配角色
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -143,7 +166,7 @@
 <script setup>
 import {ref} from "vue";
 import api from "@/api/userApi"
-import roleApi from '@/api/system/sysRole'
+import roleApi from '@/api/system/roleApi.js'
 import { processDateRange } from '@/utils/dateUtils'
 import {ElMessage} from "element-plus";
 

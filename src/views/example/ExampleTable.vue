@@ -20,7 +20,7 @@
         </el-col>
         <!--:push=6 表示向右边移动6个栅栏-->
         <el-col :span="12" class="btn-col" >
-            <el-button type="primary" @click="fetchData">
+            <el-button type="primary" @click="fetchData()">
               <el-icon><Search /></el-icon>
               搜索
             </el-button>

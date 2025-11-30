@@ -128,7 +128,7 @@
 
 <script setup>
 import {ref} from "vue";
-import api from "@/api/system/OperLogApi"
+import api from "@/api/system/operLogApi.js"
 import { processDateRange } from '@/utils/dateUtils'
 
 
