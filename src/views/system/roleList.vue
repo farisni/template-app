@@ -137,9 +137,9 @@
       </template>
     </el-dialog>
     <!--临时侧边栏-->
-    <el-drawer v-model="state.drawerVisible"  direction="rtl" >
+    <el-drawer v-model="state.drawerVisible"  direction="rtl">
       <template #header>
-        <h4>分配权限 {{state.checkedRole.name}}</h4>
+        <h4>「{{state.checkedRole.name}}」分配权限 </h4>
       </template>
       <template #default>
         <div>
@@ -269,7 +269,7 @@ const  isDisabled = (row) => {
 
 const assignRole = async (row)=>{
   state.value.checkedRole.id = row.id
-  state.value.checkedRole.name = row.name
+  state.value.checkedRole.name = row.roleName
   state.value.drawerVisible=true
   let resp = await menuApi.getMenuByRoleId(row.id)
   state.value.roleMenuTreeList = resp.data
@@ -329,6 +329,8 @@ $table-area_operation-height:50px;
 /* 组件自身的 scoped 样式 */
 :deep(.el-drawer__header) {
   margin-bottom: 0;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--el-border-color-light);
 }
 
 </style>

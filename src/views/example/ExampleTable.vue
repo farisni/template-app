@@ -84,7 +84,7 @@ const state = ref(
 )
 
 // 直接在 setup 中执行，相当于 created
-const fetchData = async () => {
+const fetchData = async (page=1) => {
   // 获取数据的逻辑
   state.value.tableData = await exampleApi.getUserList()
 }

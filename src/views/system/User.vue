@@ -69,7 +69,11 @@
           <template #default="scope">
             <el-switch
                 :model-value="scope.row.status === 1"
-                @update:model-value="(value) => switchStatus(scope.row, value)">
+                @update:model-value="(value) => switchStatus(scope.row, value)"
+                inline-prompt
+                active-text="是"
+                inactive-text="否"
+                style="--el-switch-on-color: #13ce66; --el-switch-off-color: gray">
             </el-switch>
           </template>
         </el-table-column>
@@ -165,7 +169,7 @@
 
 <script setup>
 import {ref} from "vue";
-import api from "@/api/userApi"
+import api from "@/api/system/userApi.js"
 import roleApi from '@/api/system/roleApi.js'
 import { processDateRange } from '@/utils/dateUtils'
 import {ElMessage} from "element-plus";

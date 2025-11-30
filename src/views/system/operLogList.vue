@@ -24,7 +24,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="7" class="btn-col" >
-          <el-button type="primary" @click="fetchData">
+          <el-button type="primary" @click="fetchData()">
             <el-icon><Search /></el-icon>
             搜索
           </el-button>
@@ -69,15 +69,16 @@
         <el-table-column prop="operUrl" label="请求路径" width="380" show-overflow-tooltip/>
         <el-table-column prop="operName" label="操作人员" width="85"/>
         <el-table-column prop="operIp" label="操作IP" width="120"/>
+        <el-table-column prop="execTime" label="执行时长" width="80"/>
 
-        <el-table-column prop="status" label="操作状态" >
-          <template  v-slot="scope">
-            <span v-if="scope.row.status === 0">正常</span>
-            <span v-if="scope.row.status === 1">异常</span>
+        <el-table-column label="状态" align="center" width="100">
+          <template #default="scope">
+            <el-tag v-if="scope.row.status === 0" type="success">正常</el-tag>
+            <el-tag v-else type="danger">异常</el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column prop="createTime" label="创建时间" />
+        <el-table-column prop="createTime" label="创建时间" width="170"/>
         <el-table-column label="操作" width="130" fixed="right">
           <template v-slot="scope">
             <el-button type="text" @click="showInfo(scope.row.id)">详情</el-button>
@@ -156,13 +157,14 @@ const state = ref(
 )
 
 // 直接在 setup 中执行，相当于 created
-const fetchData = async () => {
-  let {currentPage, pageSize, searchObj} = state.value
+const fetchData = async (page=1) => {
+  let refreshPage = page
+  let {pageSize, searchObj} = state.value
   const timeRange = processDateRange(state.value.createTimes)
   searchObj.createTimeBegin = timeRange[0]
   searchObj.createTimeEnd = timeRange[1]
   // 获取数据的逻辑
-  let res = await api.getPageList(currentPage, pageSize, searchObj)
+  let res = await api.getPageList(refreshPage, pageSize, searchObj)
   state.value.tableData = res.data.list
   state.value.total = res.data.total
 }

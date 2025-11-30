@@ -81,7 +81,7 @@ import CaptchaCode from 'vue-captcha-code' // 模拟图形验证码，实际后�
 import { ElMessage } from 'element-plus'
 import router, {addDynamicFLatRoutes} from "@/router/index.js";
 import { useAppStore } from '@/stores/app'
-import api from '@/api/userApi'; // 导入 API 方法
+import api from '@/api/system/userApi.js'; // 导入 API 方法
 
 
 
