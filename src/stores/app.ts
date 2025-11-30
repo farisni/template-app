@@ -71,7 +71,7 @@ export const useAppStore = defineStore('app', {
     persist: [{
         key: 'app-store',
         storage: localStorage,
-        pick: ['userInfo', 'isCollapse'], // 只持久化这些字段，注意pick和paths的区别
+        pick: ['userInfo', 'isCollapse', 'activePath'], // 只持久化这些字段，注意pick和paths的区别
     },{
         key: 'token',
         storage:localStorage,
