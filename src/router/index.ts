@@ -32,9 +32,10 @@ export const componentMap: Record<string, any> = {
     // '/mall': () => import('@/views/Mall.vue'), // 有子菜单一般没有组件，只负责展开
     '/mall/brand': () => import('@/views/Brand.vue'),
     '/mall/add': () => import('@/views/GoodsAdd.vue'),
-    '/system/user': () => import('@/views/system/User.vue'),
+    '/system/user': () => import('@/views/system/userList.vue'),
     '/system/operLogList': () => import('@/views/system/operLogList.vue'),
     '/system/roleList': () => import('@/views/system/roleList.vue'),
+    '/system/menuList': () => import('@/views/system/menuList.vue'),
     '/other/page1': () => import('@/views/Page1.vue'),
     '/other/CommonTable': () => import('@/views/example/ExampleTable.vue'),
 }

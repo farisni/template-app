@@ -65,7 +65,7 @@
         <el-table-column prop="email" label="邮箱" />
         <el-table-column prop="dept" label="部门" />
         <el-table-column prop="role" label="角色" />
-        <el-table-column label="启用状态" width="90">
+        <el-table-column label="启用" width="90">
           <template #default="scope">
             <el-switch
                 :model-value="scope.row.status === 1"

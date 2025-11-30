@@ -6,6 +6,14 @@ import request from '@/utils/request'
 const api_name = '/admin/system/sysMenu'
 
 export default {
+    /*获取权限(菜单/功能)列表*/
+    page(page, limit, searchObj) {
+        return request({
+            url: `${api_name}/${page}/${limit}`,
+            method: 'get',
+            params: searchObj // url查询字符串或表单键值对
+        })
+    },
     getMenuByRoleId(roleId) {
         return request({
             url: `${api_name}/toAssign/${roleId}`,

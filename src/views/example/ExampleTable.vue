@@ -22,11 +22,11 @@
         <el-col :span="12" class="btn-col" >
             <el-button type="primary" @click="fetchData()">
               <el-icon><Search /></el-icon>
-              搜索
+              <span>搜索</span>
             </el-button>
             <el-button @click="">
               <el-icon><Refresh /></el-icon>
-              重置
+              <span>重置</span>
             </el-button>
         </el-col>
       </el-row>
@@ -36,10 +36,10 @@
     <!--列表操作-->
     <div class="table-area_operation">
       <el-button type="success">
-        <el-icon><Plus /></el-icon>新建
+        <el-icon><Plus /></el-icon><span>新建</span>
       </el-button>
       <el-button type="danger" >
-        <el-icon><Delete /></el-icon>删除
+        <el-icon><Delete /></el-icon><span>删除</span>
       </el-button>
     </div>
     <!--列表数据-->

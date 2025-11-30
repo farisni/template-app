@@ -19,8 +19,7 @@
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
                 type="daterange"
-                range-separator="至"
-            />
+                range-separator="至"/>
           </el-form-item>
         </el-col>
         <el-col :span="7" class="btn-col" >
@@ -42,42 +41,44 @@
       <el-button type="success">
         <el-icon><Plus /></el-icon><span>新建</span>
       </el-button>
-      <el-button type="danger" >
-        <el-icon><Delete /></el-icon><span>删除</span>
-      </el-button>
     </div>
     <!--列表数据-->
     <div class="table-area_data">
       <el-table
-          v-loading="state.listLoading"
+          row-key="id"
           :data="state.tableData"
-          stripe>
-
+          stripe
+          :default-expand-all="false"
+          :tree-props="{children: 'children'}">
         <el-table-column type="selection" width="30" />
-        <el-table-column
-            label="序号"
-            width="55"
-            align="center">
-          <template v-slot="scope">
-            {{ (state.currentPage - 1) * state.pageSize + scope.$index + 1 }}
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="title" label="系统模块" width="90"/>
-        <el-table-column prop="operatorType" label="操作类型" width="90" />
-        <el-table-column prop="businessType" label="请求方式" width="85"/>
-        <el-table-column prop="operUrl" label="请求路径" width="380" show-overflow-tooltip/>
-        <el-table-column prop="operName" label="操作人员" width="85"/>
-        <el-table-column prop="operIp" label="操作IP" width="120"/>
-        <el-table-column prop="execTime" label="执行时长" width="80"/>
-
-        <el-table-column label="状态" align="center" width="100">
+        <el-table-column prop="name" label="菜单名称" width="130"/>
+        <el-table-column label="类型" align="center" width="75">
           <template #default="scope">
-            <el-tag v-if="scope.row.status === 0" type="success">正常</el-tag>
-            <el-tag v-else type="danger">异常</el-tag>
+            <el-tag v-if="scope.row.type === 0" type="warning">目录</el-tag>
+            <el-tag v-if="scope.row.type === 1" type="success">菜单</el-tag>
+            <el-tag v-if="scope.row.type === 2" type="danger">按钮</el-tag>
           </template>
         </el-table-column>
-
+        <el-table-column label="图标">
+          <template #default="scope">
+            <el-icon><component :is="scope.row.icon" /></el-icon>
+          </template>
+        </el-table-column>
+        <el-table-column prop="perms" label="权限标识" width="160"/>
+        <el-table-column prop="path" label="路由地址" width="200"/>
+        <el-table-column prop="component" label="组件路径" width="200"/>
+        <el-table-column prop="sortValue" label="排序" width="60"/>
+        <el-table-column label="状态" width="80">
+          <template #default="scope">
+            <el-switch
+                :model-value="scope.row.status === 1"
+                inline-prompt
+                active-text="启用"
+                inactive-text="停用"
+                style="--el-switch-off-color: gray">
+            </el-switch>
+          </template>
+        </el-table-column>
         <el-table-column prop="createTime" label="创建时间" width="170"/>
         <el-table-column label="操作" width="130" fixed="right">
           <template v-slot="scope">
@@ -122,16 +123,27 @@
           </el-button>
         </span>
     </template>
-
-
   </el-dialog>
 </template>
 
 <script setup>
 import {ref} from "vue";
-import api from "@/api/system/operLogApi.js"
+import api from "@/api/system/menuApi.js"
 import { processDateRange } from '@/utils/dateUtils'
 
+
+const formData = {
+  id: '',
+  parentId: '',
+  name: '',
+  type: 0,
+  path: '',
+  component: '',
+  perms: '',
+  icon: '',
+  sortValue: 1,
+  status: 1
+}
 
 const state = ref(
     {
@@ -148,11 +160,6 @@ const state = ref(
       tableData: [],
       listLoading: false,
       dialogVisible:false,
-      info: {
-        jsonResult: "无",
-        operParam: "无",
-        operUrl:""
-      }
     }
 )
 
@@ -164,7 +171,7 @@ const fetchData = async (page=1) => {
   searchObj.createTimeBegin = timeRange[0]
   searchObj.createTimeEnd = timeRange[1]
   // 获取数据的逻辑
-  let res = await api.getPageList(refreshPage, pageSize, searchObj)
+  let res = await api.page(refreshPage, pageSize, searchObj)
   state.value.tableData = res.data.list
   state.value.total = res.data.total
 }
@@ -175,9 +182,6 @@ fetchData()
 const showInfo = async (id) => {
   console.log("详情....")
   let resp = await api.getById(id)
-  state.value.info.jsonResult = resp.data.jsonResult
-  state.value.info.operParam = resp.data.operParam
-  state.value.info.operUrl = resp.data.operUrl
   state.value.dialogVisible = true
 }
 
