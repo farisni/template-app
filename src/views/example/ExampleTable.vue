@@ -99,7 +99,7 @@ fetchData()
 
 $search-wrapper-height:55px;
 $table-area_operation-height:50px;
-@import '@/styles/commonTable.scss'; // 引人公共table样式
+@use '@/styles/commonTable.scss'; // 引人公共table样式
 
 .search-area {
   height: $search-wrapper-height; // 覆盖父类
@@ -110,4 +110,6 @@ $table-area_operation-height:50px;
 }
 
 
+
 </style>
+

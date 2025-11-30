@@ -14,6 +14,7 @@ export default {
     },
     getUserInfo() {
         return request({
+            //  url: '/user/info',
             url: `/admin/system/sysUser/info`,
             method: 'get'
         })
