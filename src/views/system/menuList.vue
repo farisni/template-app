@@ -45,11 +45,15 @@
     <!--列表数据-->
     <div class="table-area_data">
       <el-table
+          ref="tableRef"
           row-key="id"
           :data="state.tableData"
           stripe
           :default-expand-all="false"
-          :tree-props="{children: 'children'}">
+          highlight-current-row
+          @selection-change="handleSelectionChange"
+          @row-click="handleRowClick"
+          :tree-props="{children: 'children', checkStrictly: true}"> <!--checkStrictly 这样父子勾选不关联-->
         <el-table-column type="selection" width="30" />
         <el-table-column prop="name" label="菜单名称" width="150"/>
         <el-table-column label="类型" align="center" width="75">
@@ -96,9 +100,10 @@
           :background="true"
           layout="total, sizes, prev, pager, next, jumper"
           :total="state.total"
-          @current-change="fetchData"/>
+          @current-change="fetchData"
+          />
     </div>
-  </div>
+
   <!--详情/编辑/新增-->
   <el-drawer v-model="state.drawerVisible"  direction="rtl">
     <template #header>
@@ -112,29 +117,19 @@
             <el-input v-model="state.formData.parentName"/>
           </el-form-item>
           <el-form-item label="菜单类型" prop="type">
-            <!--<el-radio-group v-model="state.formData.type" :disabled="typeDisabled">-->
-            <!--  <el-radio :label="0" :disabled="type0Disabled">目录</el-radio>-->
-            <!--  <el-radio :label="1" :disabled="type1Disabled">菜单</el-radio>-->
-            <!--  <el-radio :label="2" :disabled="type2Disabled">按钮</el-radio>-->
-            <!--</el-radio-group>-->
+            <el-radio-group v-model="state.formData.type">
+              <el-radio :value="0" >目录</el-radio>
+              <el-radio :value="1" >菜单</el-radio>
+              <el-radio :value="2" >按钮</el-radio>
+            </el-radio-group>
           </el-form-item>
           <el-form-item label="菜单名称" prop="name">
             <el-input v-model="state.formData.name"/>
           </el-form-item>
-          <!--<el-form-item label="图标" prop="icon" v-if="state.formData.type !== 2">-->
-          <!--  <el-select v-model="state.formData.icon" clearable>-->
-          <!--    <el-option v-for="item in iconList" :key="item.class" :label="item.class" :value="item.class">-->
-          <!--        <span style="float: left;">-->
-          <!--          <el-icon><component :is="item.class" /></el-icon>-->
-          <!--        </span>-->
-          <!--      <span style="padding-left: 6px;">{{ item.class }}</span>-->
-          <!--    </el-option>-->
-          <!--  </el-select>-->
-          <!--</el-form-item>-->
           <el-form-item label="排序">
             <el-input-number v-model="state.formData.sortValue" controls-position="right" :min="0" />
           </el-form-item>
-          <el-form-item prop="path">
+          <el-form-item prop="path" v-if="state.formData.type !== 2">
               <template #label>
                 <div class="flex-x-center">
                   路由地址
@@ -150,28 +145,32 @@
             <!-- 图标选择器 -->
             <icon-select v-model="state.formData.icon" />
           </el-form-item>
-          <!--<el-form-item prop="component" v-if="state.formData.type !== 0">-->
-          <!--  <template #label>-->
-          <!--    <el-tooltip content="访问的组件路径，如：`system/user/index`，默认在`views`目录下" placement="top">-->
-          <!--      <el-icon><QuestionFilled /></el-icon>-->
-          <!--    </el-tooltip>-->
-          <!--    组件路径-->
-          <!--  </template>-->
-          <!--  <el-input v-model="state.formData.component" placeholder="请输入组件路径" />-->
-          <!--</el-form-item>-->
-          <!--<el-form-item v-if="state.formData.type === 2">-->
-          <!--  <template #label>-->
-          <!--    <el-tooltip content="控制器中定义的权限字符，如：@PreAuthorize(hasAuthority('bnt.sysRole.list'))" placement="top">-->
-          <!--      <el-icon><QuestionFilled /></el-icon>-->
-          <!--    </el-tooltip>-->
-          <!--    权限字符-->
-          <!--  </template>-->
-          <!--  <el-input v-model="state.formData.perms" placeholder="请输入权限标识" maxlength="100" />-->
-          <!--</el-form-item>-->
+          <el-form-item prop="component" v-if="state.formData.type !== 2 && state.formData.type !== 0">
+            <template #label>
+              <div class="flex-x-center">
+              组件路径
+              <el-tooltip placement="top" content="访问的组件路径，如：`system/user/index`，默认在`views`目录下" >
+                <el-icon class="cursor-pointer ml-4"><QuestionFilled /></el-icon>
+              </el-tooltip>
+                </div>
+            </template>
+            <el-input v-model="state.formData.component" placeholder="请输入组件路径" />
+          </el-form-item>
+          <el-form-item v-if="state.formData.type === 2">
+            <template #label>
+              <div class="flex-x-center">
+                权限字符
+                <el-tooltip content="控制器中定义的权限字符，如：@PreAuthorize(hasAuthority('bnt.sysRole.list'))" placement="top">
+                  <el-icon class="cursor-pointer ml-4"><QuestionFilled /></el-icon>
+                </el-tooltip>
+              </div>
+            </template>
+            <el-input v-model="state.formData.perms" placeholder="请输入权限标识" maxlength="100" />
+          </el-form-item>
           <el-form-item label="状态" prop="type">
             <el-radio-group v-model="state.formData.status">
-              <el-radio :label="1">正常</el-radio>
-              <el-radio :label="0">停用</el-radio>
+              <el-radio :value="1">正常</el-radio>
+              <el-radio :value="0">停用</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -184,6 +183,7 @@
       </div>
     </template>
   </el-drawer>
+  </div>
 </template>
 
 <script setup>
@@ -193,7 +193,6 @@ import IconSelect from "@/components/IconSelect/index.vue"
 import { processDateRange } from '@/utils/dateUtils'
 
 // const elFormRef = ref(ElForm);
-
 
 const MenuTypeEnum = {
   CATALOG: 0,     // 目录
@@ -212,7 +211,7 @@ const formData = {
   perms: '',
   icon: '',
   sortValue: 1,
-  status: 1
+  status: 1,
 }
 
 const state = ref(
@@ -262,6 +261,37 @@ const add = ()=>{
   state.value.drawerTitle = "新建菜单";
 }
 
+const tableRef = ref()
+
+const selectedRow = ref([])
+
+// 控制只能单选行
+function handleSelectionChange(rows) {
+  const last = rows[rows.length - 1]
+  if (rows.length > 1) {
+    // 只保留最后一次选中的
+    tableRef.value.clearSelection() // 清空所有
+    tableRef.value.toggleRowSelection(last, true) // 重新选中当前
+    selectedRow.value = [last]
+    // 高亮当前行
+  } else {
+    // 只选择了一行
+    selectedRow.value = rows
+  }
+  tableRef.value.setCurrentRow(last) // 设置当前选择的行高亮
+}
+
+// 点击当前行同时选择复选框再高亮
+function handleRowClick(row) {
+  // 先清空所有勾选
+  tableRef.value.clearSelection()
+  // 勾选当前行
+  tableRef.value.toggleRowSelection(row, true)
+  // 高亮当前行
+  tableRef.value.setCurrentRow(row)
+  selectedRow.value = row
+}
+
 
 </script>
 
@@ -280,12 +310,16 @@ $table-area_operation-height:50px;
   height: $table-area_operation-height; // 覆盖父类
 }
 </style>
-
 <style scoped>
+/*el-drawer 要在div下，否则css选择不到，注意一下*/
 /* 组件自身的 scoped 样式 */
 :deep(.el-drawer__header) {
   margin-bottom: 0;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--el-border-color-light);
+}
+/* 选中行高亮样式 */
+.selected-row {
+  background-color: rgba(64, 128, 255, 0.15) !important; /* element 主题蓝透明高亮 */
 }
 </style>
