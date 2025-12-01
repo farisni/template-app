@@ -32,6 +32,7 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
+    "@iconify/utils": "^3.1.0",
     "@tsconfig/node22": "^22.0.2",
     "@types/node": "^22.18.11",
     "@vitejs/plugin-vue": "^6.0.1",
@@ -40,6 +41,7 @@
     "prettier": "3.6.2",
     "sass": "^1.93.3",
     "typescript": "~5.9.0",
+    "unocss": "^66.5.10-beta.1",
     "vite": "^7.1.11",
     "vite-plugin-vue-devtools": "^8.0.3",
     "vue-tsc": "^3.1.1"

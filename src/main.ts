@@ -9,7 +9,7 @@ import { createPinia } from 'pinia' // 状态管理
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import router from './router/index'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue' // 引入Icon
-
+import 'uno.css' //
 import '@/styles/index.scss' // 引入全局样式
 import '@/router/guard' // 路由守卫
 import {addDynamicFLatRoutes} from "@/router/index.js";

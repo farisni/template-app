@@ -332,5 +332,4 @@ $table-area_operation-height:50px;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--el-border-color-light);
 }
-
 </style>
