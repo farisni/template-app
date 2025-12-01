@@ -17,11 +17,9 @@ import 'simplebar/dist/simplebar.min.css';
 
 
 
-
 const app = createApp(App)
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
-
 
 // 注册所有图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

@@ -29,5 +29,17 @@ export default {
             method: "post",
             data: roleMenuVo
         })
-    }
+    },
+    getById(id) {
+        return request({
+            url: `${api_name}/getInfo/${id}`,
+            method: 'get'
+        })
+    },
+    findNodes() {
+        return request({
+            url: `${api_name}/findNodes`,
+            method: 'get'
+        })
+    },
 }

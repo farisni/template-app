@@ -84,9 +84,17 @@
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" width="170"/>
-        <el-table-column label="操作" width="130" fixed="right">
+        <el-table-column label="操作" width="160" fixed="right">
           <template v-slot="scope">
-            <el-button type="text" @click="showInfo(scope.row.id)">详情</el-button>
+            <el-button type="text" size="small" @click="info(scope.row.id)">详情</el-button>
+            <el-button
+                type="primary"
+                size="small"
+                link
+                icon="edit"
+                @click="edit(scope.row.id)">
+              编辑
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -105,7 +113,7 @@
     </div>
 
   <!--详情/编辑/新增-->
-  <el-drawer v-model="state.drawerVisible"  direction="rtl">
+  <el-drawer v-model="state.drawerVisible"  direction="rtl" size="35%">
     <template #header>
       <h4>{{state.drawerTitle}}</h4>
       <!--<div class="i-svg:api" />-->
@@ -113,8 +121,29 @@
     <template #default>
       <div>
         <el-form ref="elFormRef" :model="state.formData" label-width="100px">
-          <el-form-item label="父级菜单" v-if="state.formData.parentId === ''">
-            <el-input v-model="state.formData.parentName"/>
+          <!--v-if="state.formData.parentId === ''"-->
+          <el-form-item label="父级菜单" >
+            <!--<el-input v-model="state.formData.parentName"/>-->
+            <el-tree-select
+                v-model="state.formData.parentId"
+                :data="state.formData.menuOptions"
+                placeholder="选择上级菜单"
+                check-strictly
+                filterable
+                :default-expanded-keys="['-1']"
+                :render-after-expand="false"
+            >
+              <!-- 选中后输入框显示完整路径 -->
+              <template #prefix>
+                <span v-if="formData.parentId" class="full-path-prefix">
+                  {{ getSelectedFullPath(state.formData.parentId) }}
+                </span>
+              </template>
+              <template #default="{ data }">
+                <span>{{ data.label }}</span>
+              </template>
+            </el-tree-select>
+            <!--filterable 可搜索 -->
           </el-form-item>
           <el-form-item label="菜单类型" prop="type">
             <el-radio-group v-model="state.formData.type">
@@ -146,6 +175,7 @@
             <icon-select v-model="state.formData.icon" />
           </el-form-item>
           <el-form-item prop="component" v-if="state.formData.type !== 2 && state.formData.type !== 0">
+
             <template #label>
               <div class="flex-x-center">
               组件路径
@@ -154,7 +184,11 @@
               </el-tooltip>
                 </div>
             </template>
-            <el-input v-model="state.formData.component" placeholder="请输入组件路径" />
+            <el-input v-model="state.formData.component" placeholder="system/user/index" >
+              <template v-if="state.formData.type === MenuTypeEnum.MENU" #prepend>src/views/</template>
+              <template v-if="state.formData.type === MenuTypeEnum.MENU" #append>.vue</template>
+            </el-input>
+
           </el-form-item>
           <el-form-item v-if="state.formData.type === 2">
             <template #label>
@@ -191,6 +225,7 @@ import {ref} from "vue";
 import api from "@/api/system/menuApi.js"
 import IconSelect from "@/components/IconSelect/index.vue"
 import { processDateRange } from '@/utils/dateUtils'
+import { ElTreeSelect } from 'element-plus' // 按需导入elementPlus组件
 
 // const elFormRef = ref(ElForm);
 
@@ -199,8 +234,8 @@ const MenuTypeEnum = {
   MENU: 1,        // 菜单
   BUTTON: 2       // 按钮
 }
-
-const formData = {
+// 初始化菜单表单数据
+const initFormData = {
   id: '',
   parentId: '',
   parentName:'',
@@ -213,6 +248,9 @@ const formData = {
   sortValue: 1,
   status: 1,
 }
+
+// 菜单表单数据
+const formData = ref({ menuOptions:[], ...initFormData.value });
 
 const state = ref(
     {
@@ -231,6 +269,7 @@ const state = ref(
       listLoading: false,
       drawerVisible:false,
       drawerTitle:"",
+      selectedRow:[],
     }
 )
 
@@ -256,13 +295,68 @@ const reset = ()=>{
   fetchData()
 }
 
+
+// 数据转换函数
+const transformData = (data) => {
+  return data
+      .filter(item => item.type !== 2) // 不要按钮
+      .map(item => ({
+    value: item.id,
+    label: item.name,
+    children: item.children ? transformData(item.children) : undefined
+  }))
+}
+
+
+// 获取选中节点的完整路径
+const getSelectedFullPath = (nodeId) => {
+  const findPath = (nodes, targetId, path = []) => {
+    for (const node of nodes) {
+      if (node.value === targetId) {
+        return path // 不包含自己
+      }
+      if (node.children) {
+        const found = findPath(node.children, targetId, [...path, node.label])
+        if (found.length) return found
+      }
+    }
+    return []
+  }
+  const path = findPath(state.value.formData.menuOptions, nodeId)
+  if (!path.length) return ''
+  return path.join(' / ') + ' /'
+}
+
 const add = ()=>{
+  api.findNodes().then((resp)=>{
+    state.value.formData.menuOptions = [{ value: "-1", label: "顶级菜单", children: transformData(resp.data) }];
+
+  })
+
   state.value.drawerVisible = true
   state.value.drawerTitle = "新建菜单";
+
+}
+
+const info =(id) => {
+
+}
+
+const edit = async (id) => {
+  let resp = await api.getById(id)
+  console.log(resp)
+  state.value.formData = { ...resp.data };
+  // state.value.formData = {
+  //   ...state.value.formData,  // 保留原有值
+  //   ...resp.data              // 用新值覆盖
+  // }
+  state.value.drawerTitle = "编辑菜单";
+  state.value.drawerVisible = true
+
 }
 
 const tableRef = ref()
-const selectedRow = ref([])
+// const selectedRow = ref([])
 
 // 控制只能单选行
 function handleSelectionChange(rows) {
@@ -271,11 +365,11 @@ function handleSelectionChange(rows) {
     // 只保留最后一次选中的
     tableRef.value.clearSelection() // 清空所有
     tableRef.value.toggleRowSelection(last, true) // 重新选中当前
-    selectedRow.value = [last]
+    state.value.selectedRow.value = [last]
     // 高亮当前行
   } else {
     // 只选择了一行
-    selectedRow.value = rows
+    state.value.selectedRow.value = rows
   }
   tableRef.value.setCurrentRow(last) // 设置当前选择的行高亮
 }
@@ -288,7 +382,7 @@ function handleRowClick(row) {
   tableRef.value.toggleRowSelection(row, true)
   // 高亮当前行
   tableRef.value.setCurrentRow(row)
-  selectedRow.value = row
+  state.value.selectedRow.value = row
 }
 
 
@@ -300,7 +394,7 @@ const hasChildren = (row) => {
 function handleRowDblClick(row) {
   if (!hasChildren(row)) {
     // 如果没有子节点，可以添加提示或执行其他操作
-    console.log('该行没有子节点')
+    // console.log('该行没有子节点')
     return
   }
   // 切换当前行的展开状态
@@ -315,7 +409,21 @@ const toggleRowExpansion = (row) => {
   tableRef.value.toggleRowExpansion(row, undefined)
 }
 
-
+const data = ref([
+  {
+    value: 1,
+    label: '系统管理',
+    children: [
+      {
+        value: 2,
+        label: '用户管理',
+        children: [
+          { value: 3, label: '用户列表' }
+        ]
+      }
+    ]
+  }
+])
 
 </script>
 
@@ -342,8 +450,14 @@ $table-area_operation-height:50px;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--el-border-color-light);
 }
-/* 选中行高亮样式 */
-.selected-row {
-  background-color: rgba(64, 128, 255, 0.15) !important; /* element 主题蓝透明高亮 */
+/* 被选择的行字体加粗 */
+:deep(.el-table__body .current-row > .el-table__cell) {
+  font-weight: bold; /*font-weight会继承*/
 }
+
+:deep(.el-form-item__label) {
+  font-weight: bold;
+}
+
+
 </style>
