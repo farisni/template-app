@@ -48,11 +48,11 @@
           ref="tableRef"
           row-key="id"
           :data="state.tableData"
-          stripe
           :default-expand-all="false"
           highlight-current-row
           @selection-change="handleSelectionChange"
           @row-click="handleRowClick"
+          @row-dblclick="handleRowDblClick"
           :tree-props="{children: 'children', checkStrictly: true}"> <!--checkStrictly 这样父子勾选不关联-->
         <el-table-column type="selection" width="30" />
         <el-table-column prop="name" label="菜单名称" width="150"/>
@@ -262,7 +262,6 @@ const add = ()=>{
 }
 
 const tableRef = ref()
-
 const selectedRow = ref([])
 
 // 控制只能单选行
@@ -291,6 +290,31 @@ function handleRowClick(row) {
   tableRef.value.setCurrentRow(row)
   selectedRow.value = row
 }
+
+
+// 检查是否有子节点
+const hasChildren = (row) => {
+  return Array.isArray(row.children) && row.children.length > 0
+}
+
+function handleRowDblClick(row) {
+  if (!hasChildren(row)) {
+    // 如果没有子节点，可以添加提示或执行其他操作
+    console.log('该行没有子节点')
+    return
+  }
+  // 切换当前行的展开状态
+  toggleRowExpansion(row)
+}
+
+// 切换展开状态
+const toggleRowExpansion = (row) => {
+  if (!tableRef.value) return
+  // 使用 toggleRowExpansion 方法
+  // 第二个参数为 undefined 表示切换状态
+  tableRef.value.toggleRowExpansion(row, undefined)
+}
+
 
 
 </script>
