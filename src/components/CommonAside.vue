@@ -18,7 +18,6 @@
     <CommonMenu
         :menu-data="appStore.userInfo.menu"
         @menu-item-click="handleMenuClick"
-
     />
 
   </el-menu>

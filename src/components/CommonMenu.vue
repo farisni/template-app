@@ -23,9 +23,10 @@
         :index="item.path"
         @click="handleMenuItemClick(item, $event)"
     >
-      <el-icon v-if="item.icon">
+      <el-icon v-if="item.icon && /^[A-Z]/.test(item.icon)">
         <component :is="item.icon" />
       </el-icon>
+      <div v-else :class="`i-svg:${item.icon}`" class="menu-icon"></div>
       <template #title>
         <span>{{ item.name }}</span>
       </template>
@@ -78,6 +79,19 @@ const handleMenuItemClick = (item,event) => {
     }
   }
 }
+
+.menu-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 22px;
+  margin-right: 5px;
+  font-size: 18px;
+  color: currentcolor;
+}
+
 
 
 </style>
