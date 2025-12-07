@@ -20,9 +20,24 @@ export default {
             method: 'get'
         })
     },
+    save(sysMenu) {
+        return request({
+            url: `${api_name}/save`,
+            method: "post",
+            data: sysMenu
+        })
+    },
+    /*更新*/
+    updateById(sysMenu) {
+        return request({
+            url: `${api_name}/update`,
+            method: "put",
+            data: sysMenu
+        })
+    },
     /*
-  给某个角色授权
-  */
+    给某个角色授权
+    */
     saveRoleMenu(roleMenuVo) {
         return request({
             url: `${api_name}/doAssign`,

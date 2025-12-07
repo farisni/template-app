@@ -38,7 +38,7 @@
   <div class="table-area">
     <!--列表操作-->
     <div class="table-area_operation">
-      <el-button type="success" @click="add">
+      <el-button type="success" @click="add()">
         <el-icon><Plus /></el-icon><span>新建</span>
       </el-button>
     </div>
@@ -54,7 +54,8 @@
           @row-click="handleRowClick"
           @row-dblclick="handleRowDblClick"
           :tree-props="{children: 'children', checkStrictly: true}"> <!--checkStrictly 这样父子勾选不关联-->
-        <el-table-column type="selection" width="30" />
+        <el-table-column type="selection" width="30" :header-cell-class-name="() => 'no-select-all'">
+        </el-table-column>
         <el-table-column prop="name" label="菜单名称" width="150"/>
         <el-table-column label="类型" align="center" width="75">
           <template #default="scope">
@@ -86,7 +87,10 @@
         <el-table-column prop="createTime" label="创建时间" width="170"/>
         <el-table-column label="操作" width="160" fixed="right">
           <template v-slot="scope">
-            <el-button type="text" size="small" @click="info(scope.row.id)">详情</el-button>
+            <el-button
+                v-if="scope.row.type === 0 || scope.row.type === 1"
+                type="primary" size="small"
+                link icon="plus" @click="add(scope.row.id)">新建</el-button>
             <el-button
                 type="primary"
                 size="small"
@@ -126,7 +130,7 @@
             <!--<el-input v-model="state.formData.parentName"/>-->
             <el-tree-select
                 v-model="state.formData.parentId"
-                :data="state.formData.menuOptions"
+                :data="menuOptions"
                 placeholder="选择上级菜单"
                 check-strictly
                 filterable
@@ -135,7 +139,7 @@
             >
               <!-- 选中后输入框显示完整路径 -->
               <template #prefix>
-                <span v-if="formData.parentId" class="full-path-prefix">
+                <span v-if="state.formData.parentId" class="full-path-prefix">
                   {{ getSelectedFullPath(state.formData.parentId) }}
                 </span>
               </template>
@@ -213,7 +217,7 @@
     <template #footer>
       <div style="flex: auto">
         <el-button @click="state.drawerVisible = false">取 消</el-button>
-        <el-button type="primary" @click="">确 定</el-button>
+        <el-button type="primary" @click="saveOrUpdate">确 定</el-button>
       </div>
     </template>
   </el-drawer>
@@ -221,11 +225,11 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import api from "@/api/system/menuApi.js"
 import IconSelect from "@/components/IconSelect/index.vue"
 import { processDateRange } from '@/utils/dateUtils'
-import { ElTreeSelect } from 'element-plus' // 按需导入elementPlus组件
+import {ElMessage, ElTreeSelect} from 'element-plus' // 按需导入elementPlus组件
 
 // const elFormRef = ref(ElForm);
 
@@ -250,7 +254,10 @@ const initFormData = {
 }
 
 // 菜单表单数据
-const formData = ref({ menuOptions:[], ...initFormData.value });
+const formData = {...initFormData.value };
+
+const menuOptions = ref([]);
+const currentRow = ref();
 
 const state = ref(
     {
@@ -269,7 +276,7 @@ const state = ref(
       listLoading: false,
       drawerVisible:false,
       drawerTitle:"",
-      selectedRow:[],
+      // selectedRow:[],
     }
 )
 
@@ -288,6 +295,14 @@ const fetchData = async (page=1) => {
 
 // 立即执行，相当于 created
 fetchData()
+
+onMounted(() => {
+  // 后端应做缓存菜单数据
+  api.findNodes().then((resp)=>{
+    menuOptions.value = [{ value: "-1", label: "顶级菜单", children: transformData(resp.data) }];
+  })
+
+})
 
 const reset = ()=>{
   state.value.createTimes = []
@@ -322,25 +337,23 @@ const getSelectedFullPath = (nodeId) => {
     }
     return []
   }
-  const path = findPath(state.value.formData.menuOptions, nodeId)
+  const path = findPath(menuOptions.value, nodeId)
   if (!path.length) return ''
   return path.join(' / ') + ' /'
 }
 
-const add = ()=>{
-  api.findNodes().then((resp)=>{
-    state.value.formData.menuOptions = [{ value: "-1", label: "顶级菜单", children: transformData(resp.data) }];
+const add = (id)=>{
 
-  })
+  // let parentId = currentRow.value?.id;
+  if (id) {
+    // 从行数据点击的新建
+    state.value.formData.parentId = id;
+  }
 
   state.value.drawerVisible = true
   state.value.drawerTitle = "新建菜单";
-
 }
 
-const info =(id) => {
-
-}
 
 const edit = async (id) => {
   let resp = await api.getById(id)
@@ -352,25 +365,40 @@ const edit = async (id) => {
   // }
   state.value.drawerTitle = "编辑菜单";
   state.value.drawerVisible = true
-
 }
 
+const saveOrUpdate = async () =>{
+  let resp
+  if (!state.value.formData.id) {
+    // 如果id不存在则走新增保存
+    resp = await api.save(state.value.formData)
+  } else {
+    // 否则走更新
+    resp = await api.updateById(state.value.formData)
+  }
+  ElMessage.success(resp.msg ||'操作成功')
+  fetchData(state.value.currentPage)
+  state.value.drawerVisible = false
+}
+
+
+// 表格引用
 const tableRef = ref()
 // const selectedRow = ref([])
+
+
 
 // 控制只能单选行
 function handleSelectionChange(rows) {
   const last = rows[rows.length - 1]
+  console.log(rows.length) // 会打印3次
   if (rows.length > 1) {
     // 只保留最后一次选中的
-    tableRef.value.clearSelection() // 清空所有
-    tableRef.value.toggleRowSelection(last, true) // 重新选中当前
-    state.value.selectedRow.value = [last]
-    // 高亮当前行
-  } else {
-    // 只选择了一行
-    state.value.selectedRow.value = rows
+    tableRef.value.clearSelection() // 清空所有 会重新触发 handleSelectionChange
+    tableRef.value.toggleRowSelection(last, true) // 重新选中当前，再次触发handleSelectionChange
   }
+  currentRow.value = last
+  // 高亮当前行
   tableRef.value.setCurrentRow(last) // 设置当前选择的行高亮
 }
 
@@ -382,7 +410,7 @@ function handleRowClick(row) {
   tableRef.value.toggleRowSelection(row, true)
   // 高亮当前行
   tableRef.value.setCurrentRow(row)
-  state.value.selectedRow.value = row
+  currentRow.value = row
 }
 
 
@@ -409,21 +437,6 @@ const toggleRowExpansion = (row) => {
   tableRef.value.toggleRowExpansion(row, undefined)
 }
 
-const data = ref([
-  {
-    value: 1,
-    label: '系统管理',
-    children: [
-      {
-        value: 2,
-        label: '用户管理',
-        children: [
-          { value: 3, label: '用户列表' }
-        ]
-      }
-    ]
-  }
-])
 
 </script>
 
@@ -441,6 +454,7 @@ $table-area_operation-height:50px;
 .table-area_operation {
   height: $table-area_operation-height; // 覆盖父类
 }
+
 </style>
 <style scoped>
 /*el-drawer 要在div下，否则css选择不到，注意一下*/
@@ -459,5 +473,8 @@ $table-area_operation-height:50px;
   font-weight: bold;
 }
 
+:deep(.el-table__header .el-checkbox) {
+  display: none;
+}
 
 </style>

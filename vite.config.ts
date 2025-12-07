@@ -20,7 +20,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8347',
+        target: 'http://localhost:8347', // 后端接口地址、跨域代理
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '') // 移除 /api 前缀
       },
