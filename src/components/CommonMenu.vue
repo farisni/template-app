@@ -86,7 +86,7 @@ const handleMenuItemClick = (item,event) => {
   align-items: center;
   justify-content: center;
   width: 24px;
-  height: 22px;
+  height: 21px;
   margin-right: 5px;
   font-size: 18px;
   color: currentcolor;
